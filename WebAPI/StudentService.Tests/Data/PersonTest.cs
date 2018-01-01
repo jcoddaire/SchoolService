@@ -1,20 +1,21 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
+using StudentService.Data;
 
 namespace StudentService.Tests.Data
 {
     [TestClass]
     public class PersonTest
     {
+        StudentDB db = new StudentDB();
+
         [TestMethod]
         public void AddPerson_Test()
         {
-            var db = new StudentService.Data.StudentDB();
-
             var currentPeopleCount = db.People.Count();
 
-            var person = new StudentService.Data.Person();
+            var person = new Person();
             person.FirstName = "Test";
             person.LastName = "Subject";
 
@@ -30,10 +31,8 @@ namespace StudentService.Tests.Data
 
         [TestMethod]
         public void ReadPerson_Test()
-        {
-            var db = new StudentService.Data.StudentDB();
-            
-            var person = new StudentService.Data.Person();
+        {            
+            var person = new Person();
             person.FirstName = "Test";
             person.LastName = "Subject";
 
@@ -55,10 +54,7 @@ namespace StudentService.Tests.Data
         [TestMethod]
         public void DeletePerson_Test()
         {
-
-            var db = new StudentService.Data.StudentDB();
-
-            var person = new StudentService.Data.Person();
+            var person = new Person();
             person.FirstName = "Test";
             person.LastName = "Subject";
 
@@ -79,7 +75,7 @@ namespace StudentService.Tests.Data
         [TestMethod]
         public void UpdatePerson_Test_LastName()
         {
-            var person = CreateTestPerson();
+            var person = CreateTestPerson(db);
 
             //confirm they are saved in the database.
             Assert.IsTrue(person.PersonID > 0);
@@ -88,7 +84,7 @@ namespace StudentService.Tests.Data
 
             person.LastName = randomName;
 
-            var db = new StudentService.Data.StudentDB();
+
 
             db.People.Attach(person);
             var entry = db.Entry(person);
@@ -109,7 +105,7 @@ namespace StudentService.Tests.Data
         [TestMethod]
         public void UpdatePerson_Test_FirstName()
         {
-            var person = CreateTestPerson();
+            var person = CreateTestPerson(db);
 
             //confirm they are saved in the database.
             Assert.IsTrue(person.PersonID > 0);
@@ -118,7 +114,7 @@ namespace StudentService.Tests.Data
 
             person.FirstName = randomName;
 
-            var db = new StudentService.Data.StudentDB();
+
 
             db.People.Attach(person);
             var entry = db.Entry(person);
@@ -139,7 +135,7 @@ namespace StudentService.Tests.Data
         [TestMethod]
         public void UpdatePerson_Test_HireDate()
         {
-            var person = CreateTestPerson();
+            var person = CreateTestPerson(db);
 
             //confirm they are saved in the database.
             Assert.IsTrue(person.PersonID > 0);
@@ -147,9 +143,7 @@ namespace StudentService.Tests.Data
             var randomDate = DateTime.Today;
 
             person.HireDate = randomDate;
-
-            var db = new StudentService.Data.StudentDB();
-
+            
             db.People.Attach(person);
             var entry = db.Entry(person);
             entry.Property(e => e.HireDate).IsModified = true;
@@ -169,7 +163,7 @@ namespace StudentService.Tests.Data
         [TestMethod]
         public void UpdatePerson_Test_EnrollmentDate()
         {
-            var person = CreateTestPerson();
+            var person = CreateTestPerson(db);
 
             //confirm they are saved in the database.
             Assert.IsTrue(person.PersonID > 0);
@@ -177,9 +171,7 @@ namespace StudentService.Tests.Data
             var randomDate = DateTime.Today;
 
             person.EnrollmentDate = randomDate;
-
-            var db = new StudentService.Data.StudentDB();
-
+            
             db.People.Attach(person);
             var entry = db.Entry(person);
             entry.Property(e => e.EnrollmentDate).IsModified = true;
@@ -196,21 +188,19 @@ namespace StudentService.Tests.Data
             db.SaveChanges();
         }
         
-        private StudentService.Data.Person CreateTestPerson()
+        public static Person CreateTestPerson(StudentDB db)
         {
             var firstName = "Test";
             var lastName = "Subject";
             DateTime? hireDate = null;
             DateTime? enrollmentDate = null;
 
-            var person = new StudentService.Data.Person();
+            var person = new Person();
             person.FirstName = firstName;
             person.LastName = lastName;
             person.HireDate = hireDate;
             person.EnrollmentDate = enrollmentDate;
             
-            var db = new StudentService.Data.StudentDB();
-
             db.People.Add(person);
             db.SaveChanges();
 

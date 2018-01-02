@@ -13,53 +13,42 @@ namespace StudentService.Tests.Integration.Data
         [TestMethod]
         public void AddDepartment_Test()
         {
-            var department = CreateTestDepartment(db);
-            Assert.IsTrue(department.DepartmentID > 0);
+            var obj = CreateTestDepartment(db);
 
-            db.Departments.Remove(department);
-            db.SaveChanges();
+            Assert.IsTrue(db.Departments.Any(x => x.DepartmentID == obj.DepartmentID));
+
+            DepartmentTest.DeleteTestObject(obj, db);
         }
 
         [TestMethod]
         public void ReadDepartment_Test()
         {
-            var department = CreateTestDepartment(db);
-            Assert.IsTrue(department.DepartmentID > 0);
+            var obj = CreateTestDepartment(db);
 
+            Assert.IsTrue(obj.DepartmentID > 0);
+            Assert.IsNotNull(obj.Name);
 
-            Assert.IsTrue(department.DepartmentID > 0);
-            Assert.IsNotNull(department.Name);
+            Assert.IsNotNull(obj.StartDate);
+            Assert.AreEqual(DateTime.Today, obj.StartDate);
 
-            Assert.IsNotNull(department.StartDate);
-            Assert.AreEqual(DateTime.Today, department.StartDate);
+            Assert.IsNotNull(obj.Budget);
+            Assert.AreEqual(1000000, obj.Budget);
 
-            Assert.IsNotNull(department.Budget);
-            Assert.AreEqual(1000000, department.Budget);
-
-            Assert.IsNull(department.Administrator);
-
-
-            db.Departments.Remove(department);
-            db.SaveChanges();
+            Assert.IsNull(obj.Administrator);
+            
+            DepartmentTest.DeleteTestObject(obj, db);
         }
 
         [TestMethod]
         public void DeleteDepartment_Test()
         {
-
-            var department = CreateTestDepartment(db);
-            Assert.IsTrue(department.DepartmentID > 0);
-
-
-            var currentCount = db.People.Count();
-
-            db.Departments.Remove(department);
-            db.SaveChanges();
+            var obj = CreateTestDepartment(db);            
             
-            Assert.IsTrue(db.Departments.Count() < currentCount);
+            var currentCount = db.Departments.Count();
 
-            var addedDepartment = db.Departments.Where(x => x.DepartmentID == department.DepartmentID).FirstOrDefault();
-            Assert.IsNull(addedDepartment);
+            DepartmentTest.DeleteTestObject(obj, db);
+
+            Assert.IsTrue(db.Departments.Count() < currentCount);            
         }
 
         [TestMethod]
@@ -86,8 +75,7 @@ namespace StudentService.Tests.Integration.Data
             Assert.AreEqual(randomName, updated.Name);
 
             //Remove the test data.
-            db.Departments.Remove(updated);
-            db.SaveChanges();
+            DepartmentTest.DeleteTestObject(obj, db);
         }
 
         [TestMethod]
@@ -114,8 +102,7 @@ namespace StudentService.Tests.Integration.Data
             Assert.AreEqual(differentBudget, updated.Budget);
 
             //Remove the test data.
-            db.Departments.Remove(updated);
-            db.SaveChanges();
+            DepartmentTest.DeleteTestObject(obj, db);
         }
         
         [TestMethod]
@@ -142,8 +129,7 @@ namespace StudentService.Tests.Integration.Data
             Assert.AreEqual(differentDate, updated.StartDate);
 
             //Remove the test data.
-            db.Departments.Remove(updated);
-            db.SaveChanges();
+            DepartmentTest.DeleteTestObject(obj, db);
         }
         
         [TestMethod]
@@ -167,11 +153,16 @@ namespace StudentService.Tests.Integration.Data
             Assert.AreEqual(person.PersonID, updated.Administrator);
 
             //Remove the test data.
-            db.Departments.Remove(updated);
+            DepartmentTest.DeleteTestObject(obj, db);
             db.People.Remove(person);
             db.SaveChanges();
         }
 
+        /// <summary>
+        /// Creates the test department.
+        /// </summary>
+        /// <param name="db">The database.</param>
+        /// <returns></returns>
         public static Department CreateTestDepartment(StudentDB db)
         {            
             var departmentName = Guid.NewGuid().ToString();
@@ -189,6 +180,16 @@ namespace StudentService.Tests.Integration.Data
             db.SaveChanges();
 
             return obj;
-        }        
+        }
+        
+        /// <summary>
+        /// Deletes the test object.
+        /// </summary>
+        /// <param name="toDelete">The object to delete.</param>
+        public static void DeleteTestObject(Department toDelete, StudentDB db)
+        {
+            db.Departments.Remove(toDelete);            
+            db.SaveChanges();
+        }
     }
 }

@@ -15,179 +15,175 @@ namespace StudentService.Tests.Integration.Data
         {
             var currentPeopleCount = db.People.Count();
 
-            var person = new Person();
-            person.FirstName = "Test";
-            person.LastName = "Subject";
+            var obj = new Person();
+            obj.FirstName = "Test";
+            obj.LastName = "Subject";
 
 
-            db.People.Add(person);
+            db.People.Add(obj);
             db.SaveChanges();
 
             Assert.IsTrue(db.People.Count() > currentPeopleCount);
 
-            db.People.Remove(person);
-            db.SaveChanges();
+            PersonTest.DeleteTestObject(obj, db);
         }
 
         [TestMethod]
         public void ReadPerson_Test()
         {            
-            var person = new Person();
-            person.FirstName = "Test";
-            person.LastName = "Subject";
+            var obj = new Person();
+            obj.FirstName = "Test";
+            obj.LastName = "Subject";
 
-            Assert.AreEqual(0, person.PersonID);
+            Assert.AreEqual(0, obj.PersonID);
 
-            db.People.Add(person);
+            db.People.Add(obj);
             db.SaveChanges();
 
-            Assert.IsTrue(person.PersonID > 0);
-            Assert.AreEqual("Test", person.FirstName);
-            Assert.AreEqual("Subject", person.LastName);
-            Assert.IsNull(person.HireDate);
-            Assert.IsNull(person.EnrollmentDate);
-
-            db.People.Remove(person);
-            db.SaveChanges();
+            Assert.IsTrue(obj.PersonID > 0);
+            Assert.AreEqual("Test", obj.FirstName);
+            Assert.AreEqual("Subject", obj.LastName);
+            Assert.IsNull(obj.HireDate);
+            Assert.IsNull(obj.EnrollmentDate);
+            
+            PersonTest.DeleteTestObject(obj, db);
         }
 
         [TestMethod]
         public void DeletePerson_Test()
         {
-            var person = new Person();
-            person.FirstName = "Test";
-            person.LastName = "Subject";
-
-
-            db.People.Add(person);
+            var obj = new Person();
+            obj.FirstName = "Test";
+            obj.LastName = "Subject";
+            
+            db.People.Add(obj);
             db.SaveChanges();
 
-            var currentPeopleCount = db.People.Count();
+            var currentCount = db.People.Count();
 
+            PersonTest.DeleteTestObject(obj, db);
 
-            db.People.Remove(person);
-            db.SaveChanges();
-
-            Assert.IsTrue(db.People.Count() < currentPeopleCount);
+            Assert.IsTrue(db.People.Count() < currentCount);
 
         }
 
         [TestMethod]
         public void UpdatePerson_Test_LastName()
         {
-            var person = CreateTestPerson(db);
+            var obj = CreateTestPerson(db);
 
             //confirm they are saved in the database.
-            Assert.IsTrue(person.PersonID > 0);
+            Assert.IsTrue(obj.PersonID > 0);
 
             var randomName = Guid.NewGuid().ToString();
 
-            person.LastName = randomName;
+            obj.LastName = randomName;
 
 
 
-            db.People.Attach(person);
-            var entry = db.Entry(person);
+            db.People.Attach(obj);
+            var entry = db.Entry(obj);
             entry.Property(e => e.LastName).IsModified = true;
             db.SaveChanges();
 
             //confirm the object was updated.
-            var updatedPerson = db.People.Where(x => x.PersonID == person.PersonID).FirstOrDefault();
+            var updatedPerson = db.People.Where(x => x.PersonID == obj.PersonID).FirstOrDefault();
 
             Assert.IsNotNull(updatedPerson);
             Assert.AreEqual(randomName, updatedPerson.LastName);
 
             //Remove the test data.
-            db.People.Remove(updatedPerson);
-            db.SaveChanges();
+            PersonTest.DeleteTestObject(obj, db);
         }
 
         [TestMethod]
         public void UpdatePerson_Test_FirstName()
         {
-            var person = CreateTestPerson(db);
+            var obj = CreateTestPerson(db);
 
             //confirm they are saved in the database.
-            Assert.IsTrue(person.PersonID > 0);
+            Assert.IsTrue(obj.PersonID > 0);
 
             var randomName = Guid.NewGuid().ToString();
 
-            person.FirstName = randomName;
+            obj.FirstName = randomName;
 
 
 
-            db.People.Attach(person);
-            var entry = db.Entry(person);
+            db.People.Attach(obj);
+            var entry = db.Entry(obj);
             entry.Property(e => e.FirstName).IsModified = true;
             db.SaveChanges();
 
             //confirm the object was updated.
-            var updatedPerson = db.People.Where(x => x.PersonID == person.PersonID).FirstOrDefault();
+            var updatedPerson = db.People.Where(x => x.PersonID == obj.PersonID).FirstOrDefault();
 
             Assert.IsNotNull(updatedPerson);
             Assert.AreEqual(randomName, updatedPerson.FirstName);
 
             //Remove the test data.
-            db.People.Remove(updatedPerson);
-            db.SaveChanges();
+            PersonTest.DeleteTestObject(obj, db);
         }
         
         [TestMethod]
         public void UpdatePerson_Test_HireDate()
         {
-            var person = CreateTestPerson(db);
+            var obj = CreateTestPerson(db);
 
             //confirm they are saved in the database.
-            Assert.IsTrue(person.PersonID > 0);
+            Assert.IsTrue(obj.PersonID > 0);
 
             var randomDate = DateTime.Today;
 
-            person.HireDate = randomDate;
+            obj.HireDate = randomDate;
             
-            db.People.Attach(person);
-            var entry = db.Entry(person);
+            db.People.Attach(obj);
+            var entry = db.Entry(obj);
             entry.Property(e => e.HireDate).IsModified = true;
             db.SaveChanges();
 
             //confirm the object was updated.
-            var updatedPerson = db.People.Where(x => x.PersonID == person.PersonID).FirstOrDefault();
+            var updatedPerson = db.People.Where(x => x.PersonID == obj.PersonID).FirstOrDefault();
 
             Assert.IsNotNull(updatedPerson);
             Assert.AreEqual(randomDate, updatedPerson.HireDate);
 
             //Remove the test data.
-            db.People.Remove(updatedPerson);
-            db.SaveChanges();
+            PersonTest.DeleteTestObject(obj, db);
         }
-        
+
         [TestMethod]
         public void UpdatePerson_Test_EnrollmentDate()
         {
-            var person = CreateTestPerson(db);
+            var obj = CreateTestPerson(db);
 
             //confirm they are saved in the database.
-            Assert.IsTrue(person.PersonID > 0);
+            Assert.IsTrue(obj.PersonID > 0);
 
             var randomDate = DateTime.Today;
 
-            person.EnrollmentDate = randomDate;
+            obj.EnrollmentDate = randomDate;
             
-            db.People.Attach(person);
-            var entry = db.Entry(person);
+            db.People.Attach(obj);
+            var entry = db.Entry(obj);
             entry.Property(e => e.EnrollmentDate).IsModified = true;
             db.SaveChanges();
 
             //confirm the object was updated.
-            var updatedPerson = db.People.Where(x => x.PersonID == person.PersonID).FirstOrDefault();
+            var updatedPerson = db.People.Where(x => x.PersonID == obj.PersonID).FirstOrDefault();
 
             Assert.IsNotNull(updatedPerson);
             Assert.AreEqual(randomDate, updatedPerson.EnrollmentDate);
 
             //Remove the test data.
-            db.People.Remove(updatedPerson);
-            db.SaveChanges();
+            PersonTest.DeleteTestObject(obj, db);
         }
-        
+
+        /// <summary>
+        /// Creates the test person.
+        /// </summary>
+        /// <param name="db">The database.</param>
+        /// <returns></returns>
         public static Person CreateTestPerson(StudentDB db)
         {
             var firstName = "Test";
@@ -205,6 +201,17 @@ namespace StudentService.Tests.Integration.Data
             db.SaveChanges();
 
             return person;
+        }
+
+
+        /// <summary>
+        /// Deletes the test object.
+        /// </summary>
+        /// <param name="toDelete">The object to delete.</param>
+        public static void DeleteTestObject(Person toDelete, StudentDB db)
+        {
+            db.People.Remove(toDelete);
+            db.SaveChanges();
         }
     }
 }

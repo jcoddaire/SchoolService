@@ -55,6 +55,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\CourseTest.cs" />
     <Compile Include="Data\DepartmentTest.cs" />
     <Compile Include="Data\PersonTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

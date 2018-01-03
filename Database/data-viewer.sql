@@ -7,9 +7,11 @@ ORDER BY DepartmentID DESC
 SELECT TOP 100 * FROM dbo.Person WITH(NOLOCK)
 ORDER BY PersonID DESC
 
---SELECT TOP 100 * FROM dbo.Course WITH(NOLOCK)
+SELECT TOP 100 * FROM dbo.Course WITH(NOLOCK)
 --SELECT TOP 100 * FROM dbo.CourseInstructor WITH(NOLOCK)
 --SELECT TOP 100 * FROM dbo.OfficeAssignment WITH(NOLOCK)
 --SELECT TOP 100 * FROM dbo.OnlineCourse WITH(NOLOCK)
 --SELECT TOP 100 * FROM dbo.OnsiteCourse WITH(NOLOCK)
 --SELECT TOP 100 * FROM dbo.StudentGrade WITH(NOLOCK)
+
+--DELETE FROM dbo.Department WHERE DepartmentID > 7

@@ -1,10 +1,14 @@
 ﻿using StudentService.Data;
-using System.Web.Http;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace StudentService.Controllers
+namespace StudentService.Tests.Integration.Data
 {
-    public class ControllerBase : ApiController
-    {
+    public abstract class TestBase
+    {        
         private IStudentService _repository = null;
 
         internal IStudentService Repository
@@ -19,5 +23,6 @@ namespace StudentService.Controllers
                 return _repository;
             }
         }
+
     }
 }

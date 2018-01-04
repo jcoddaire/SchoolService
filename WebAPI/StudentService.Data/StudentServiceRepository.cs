@@ -9,7 +9,25 @@ namespace StudentService.Data
 {
     public class StudentServiceRepository : IStudentService
     {
-        private StudentDB db = new StudentDB();
+        private StudentDB _Database = null;
+
+        private StudentDB Database
+        {
+            get
+            {
+                if (_Database == null)
+                {
+                    _Database = new StudentDB();
+                }
+
+                return _Database;
+            }
+        }
+
+        public StudentServiceRepository()
+        {
+
+        }
 
         /// <summary>
         /// Gets all people.
@@ -17,7 +35,7 @@ namespace StudentService.Data
         /// <returns></returns>
         public List<PersonDTO> GetAllPersons()
         {
-            var sourcePeople = db.People.Select(
+            var sourcePeople = Database.People.Select(
                 x => new PersonDTO()
                 {
                     PersonID = x.PersonID,
@@ -45,7 +63,7 @@ namespace StudentService.Data
                 return null;
             }
 
-            var personOfInterest = db.People.Where(p => p.PersonID == personID).Select(
+            var personOfInterest = Database.People.Where(p => p.PersonID == personID).Select(
                 x => new PersonDTO()
                 {
                     PersonID = x.PersonID,
@@ -62,6 +80,81 @@ namespace StudentService.Data
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Creates the person.
+        /// </summary>
+        /// <param name="person">The person.</param>
+        /// <returns></returns>
+        public PersonDTO CreatePerson(PersonDTO person)
+        {
+            var newPeep = new Person
+            {
+                FirstName = person.FirstName,
+                LastName = person.LastName,
+                EnrollmentDate = person.EnrollmentDate,
+                HireDate = person.HireDate
+            };
+
+            Database.People.Add(newPeep);
+            Database.SaveChanges();
+
+            //leap of faith, apparently the newPeep object has the ID.
+            person.PersonID = newPeep.PersonID;
+
+            return person;
+        }
+
+        /// <summary>
+        /// Updates the person.
+        /// </summary>
+        /// <param name="person">The person.</param>
+        /// <returns></returns>
+        public PersonDTO UpdatePerson(PersonDTO person)
+        {
+            var changedPeep = Database.People.Where(p => p.PersonID == person.PersonID).FirstOrDefault();
+            if(changedPeep == null || changedPeep.PersonID != person.PersonID)
+            {
+                throw new KeyNotFoundException("Could not find a matching ID in the dataset.");
+            }
+
+            changedPeep.FirstName = person.FirstName;
+            changedPeep.LastName = person.LastName;
+            changedPeep.EnrollmentDate = person.EnrollmentDate;
+            changedPeep.HireDate = person.HireDate;
+            
+            Database.People.Attach(changedPeep);
+
+            var entry = Database.Entry(changedPeep);
+            entry.Property(e => e.FirstName).IsModified = true;
+            entry.Property(e => e.LastName).IsModified = true;
+            entry.Property(e => e.EnrollmentDate).IsModified = true;
+            entry.Property(e => e.HireDate).IsModified = true;
+
+            Database.SaveChanges();
+
+            return person;
+        }
+
+        /// <summary>
+        /// Deletes the person.
+        /// </summary>
+        /// <param name="personID">The person identifier.</param>
+        /// <returns>
+        /// The number of rows affected.
+        /// If something failed, returns -1.
+        /// </returns>
+        public int DeletePerson(int personID)
+        {
+            var target = Database.People.Where(x => x.PersonID == personID).FirstOrDefault();
+            
+            if(target != null && target.PersonID == personID)
+            {
+                Database.People.Remove(target);
+                return Database.SaveChanges();                
+            }
+            return -1;
         }
     }
 }

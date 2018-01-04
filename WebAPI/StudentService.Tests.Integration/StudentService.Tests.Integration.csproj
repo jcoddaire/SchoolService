@@ -58,6 +58,7 @@
     <Compile Include="Data\CourseTest.cs" />
     <Compile Include="Data\DepartmentTest.cs" />
     <Compile Include="Data\PersonTest.cs" />
+    <Compile Include="Data\TestBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -70,6 +71,10 @@
     <ProjectReference Include="..\StudentService.Data\StudentService.Data.csproj">
       <Project>{bd0173b5-8bb9-4f2a-abf2-de03375c8560}</Project>
       <Name>StudentService.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\StudentService.DTOs\StudentService.DTOs.csproj">
+      <Project>{f2e7a223-f18d-4cd9-bd6f-39378ca9274d}</Project>
+      <Name>StudentService.DTOs</Name>
     </ProjectReference>
     <ProjectReference Include="..\StudentService\StudentService.csproj">
       <Project>{6dd983b5-a197-4da8-bb60-bc538a2026b7}</Project>

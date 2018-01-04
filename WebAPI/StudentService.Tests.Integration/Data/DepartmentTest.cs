@@ -6,9 +6,9 @@ using StudentService.Data;
 namespace StudentService.Tests.Integration.Data
 {
     [TestClass]
-    public class DepartmentTest
+    public class DepartmentTest : TestBase
     {
-        StudentDB db = new StudentDB();
+        StudentDB db = new StudentDB();        
 
         [TestMethod]
         public void AddDepartment_Test()
@@ -137,7 +137,7 @@ namespace StudentService.Tests.Integration.Data
         {
             var obj = CreateTestDepartment(db);
                                     
-            var person = PersonTest.CreateTestPerson(db);
+            var person = PersonTest.CreateTestPerson(Repository);
 
             obj.Administrator = person.PersonID;
             
@@ -154,8 +154,7 @@ namespace StudentService.Tests.Integration.Data
 
             //Remove the test data.
             DepartmentTest.DeleteTestObject(obj, db);
-            db.People.Remove(person);
-            db.SaveChanges();
+            PersonTest.DeleteTestObject(person, Repository);
         }
 
         /// <summary>

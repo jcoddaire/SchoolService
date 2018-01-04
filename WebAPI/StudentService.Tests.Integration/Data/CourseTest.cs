@@ -1,29 +1,28 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
+using StudentService.DTOs;
 using StudentService.Data;
 
 namespace StudentService.Tests.Integration.Data
 {
     [TestClass]
-    public class CourseTest
+    public class CourseTest : TestBase
     {
-        StudentDB db = new StudentDB();
-
         [TestMethod]
         public void AddCourse_Test()
         {
-            var obj = CreateTestCourse(db);
+            var obj = CreateTestCourse(Repository);
 
-            Assert.IsTrue(db.Courses.Any(x => x.CourseID == obj.CourseID));
+            Assert.IsTrue(Repository.GetAllCourses().Any(x => x.CourseID == obj.CourseID));
 
-            CourseTest.DeleteTestObject(obj, db);
+            CourseTest.DeleteTestObject(obj, Repository);
         }
 
         [TestMethod]
         public void ReadCourse_Test()
         {
-            var obj = CreateTestCourse(db);
+            var obj = CreateTestCourse(Repository);
 
             Assert.IsNotNull(obj.CourseID);
             Assert.IsNotNull(obj.Title);
@@ -34,135 +33,156 @@ namespace StudentService.Tests.Integration.Data
             Assert.IsTrue(obj.DepartmentID > 0);
             Assert.IsTrue(obj.Title.Length > 5);
 
-            CourseTest.DeleteTestObject(obj, db);
+            CourseTest.DeleteTestObject(obj, Repository);
         }
         
         [TestMethod]
         public void DeleteCourse_Test()
         {
-            var obj = CreateTestCourse(db);
-            
-            var currentCount = db.Courses.Count();
+            var obj = CreateTestCourse(Repository);
 
-            CourseTest.DeleteTestObject(obj, db);
+            var currentCount = Repository.GetAllCourses().Count();
 
-            Assert.IsTrue(db.Courses.Count() < currentCount);
+            CourseTest.DeleteTestObject(obj, Repository);
+
+            Assert.IsTrue(Repository.GetAllCourses().Count() < currentCount);
         }
 
         [TestMethod]
         public void UpdateCourse_Test_Title()
         {
-            var obj = CreateTestCourse(db);
-            
-            var randomTitle = Guid.NewGuid().ToString();
+            var obj = CreateTestCourse(Repository);
 
-            obj.Title = randomTitle;
-            
-            db.Courses.Attach(obj);
-            var entry = db.Entry(obj);
-            entry.Property(e => e.Title).IsModified = true;
-            db.SaveChanges();
+            try
+            {
+                var randomTitle = Guid.NewGuid().ToString();
 
-            //confirm the object was updated.
-            var updated = db.Courses.Where(x => x.CourseID == obj.CourseID).FirstOrDefault();
+                obj.Title = randomTitle;
 
-            Assert.IsNotNull(updated);
-            Assert.AreEqual(randomTitle, updated.Title);
+                obj = Repository.UpdateCourse(obj);
 
-            //Remove the test data.            
-            CourseTest.DeleteTestObject(obj, db);
+                //confirm the object was updated.
+                var updated = Repository.GetCourse(obj.CourseID);
+
+                Assert.IsNotNull(updated);
+                Assert.AreEqual(randomTitle, updated.Title);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+                //Remove the test data.            
+                CourseTest.DeleteTestObject(obj, Repository);
+            }
         }
 
         [TestMethod]
         public void UpdateCourse_Test_Credits()
         {
-            var obj = CreateTestCourse(db);
-            
-            var differentCredit = obj.Credits + 1;
+            var obj = CreateTestCourse(Repository);
 
-            obj.Credits = differentCredit;
+            try
+            {
+                var differentCredit = obj.Credits + 1;
 
-            db.Courses.Attach(obj);
-            var entry = db.Entry(obj);
-            entry.Property(e => e.Credits).IsModified = true;
-            db.SaveChanges();
+                obj.Credits = differentCredit;
 
-            //confirm the object was updated.
-            var updated = db.Courses.Where(x => x.CourseID == obj.CourseID).FirstOrDefault();
+                obj = Repository.UpdateCourse(obj);
 
-            Assert.IsNotNull(updated);
-            Assert.AreEqual(differentCredit, updated.Credits);
+                //confirm the object was updated.
+                var updated = Repository.GetCourse(obj.CourseID);
 
-            //Remove the test data.
-            CourseTest.DeleteTestObject(obj, db);
+                Assert.IsNotNull(updated);
+                Assert.AreEqual(differentCredit, updated.Credits);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+                //Remove the test data.
+                CourseTest.DeleteTestObject(obj, Repository);
+            }
+
         }
 
         [TestMethod]
         public void UpdateCourse_Test_Department()
         {
-            var obj = CreateTestCourse(db);
+            var obj = CreateTestCourse(Repository);
 
             var originalDepartmentID = obj.DepartmentID;
 
-            var newDepartment = DepartmentTest.CreateTestDepartment(db);
+            try
+            {
+                var newDepartment = DepartmentTest.CreateTestDepartment(Repository);
 
-            obj.DepartmentID = newDepartment.DepartmentID;
+                obj.DepartmentID = newDepartment.DepartmentID;
 
-            db.Courses.Attach(obj);
-            var entry = db.Entry(obj);
-            entry.Property(e => e.DepartmentID).IsModified = true;
-            db.SaveChanges();
+                obj = Repository.UpdateCourse(obj);
 
-            //confirm the object was updated.
-            var updated = db.Courses.Where(x => x.CourseID == obj.CourseID).FirstOrDefault();
+                //confirm the object was updated.
+                var updated = Repository.GetCourse(obj.CourseID);
 
-            Assert.IsNotNull(updated);
-            Assert.AreEqual(newDepartment.DepartmentID, updated.DepartmentID);
+                Assert.IsNotNull(updated);
+                Assert.AreEqual(newDepartment.DepartmentID, updated.DepartmentID);
+            }
+            catch (Exception)
+            {
 
-            //Remove the test data.
-            CourseTest.DeleteTestObject(obj, db);
+                throw;
+            }
+            finally
+            {
+                //Remove the test data.
+                CourseTest.DeleteTestObject(obj, Repository);
 
-            var originalDepartment = db.Departments.Where(x => x.DepartmentID == originalDepartmentID).FirstOrDefault();
-            DepartmentTest.DeleteTestObject(originalDepartment, db);
-        }        
+                var originalDepartment = Repository.GetDepartment(originalDepartmentID);
+                DepartmentTest.DeleteTestObject(originalDepartment, Repository);
+            }
+        }
 
         /// <summary>
         /// Creates the test course.
         /// </summary>
-        /// <param name="db">The database context.</param>
+        /// <param name="_repository">The repository.</param>
         /// <returns></returns>
-        public static Course CreateTestCourse(StudentDB db)
+        public static CourseDTO CreateTestCourse(IStudentService _repository)
         {            
             var title = Guid.NewGuid().ToString();
             var random = new Random();
             var credits = random.Next(1, 4);
-            var departmentID = DepartmentTest.CreateTestDepartment(db).DepartmentID;                 
+            var departmentID = DepartmentTest.CreateTestDepartment(_repository).DepartmentID;                 
             
-            var obj = new Course();
-            obj.CourseID = db.Courses.Max(x => x.CourseID) + 1;
+            var obj = new CourseDTO();
+            obj.CourseID = _repository.GetAllCourses().Max(x => x.CourseID) + 1;
             obj.Title = title;
             obj.Credits = credits;
-            obj.DepartmentID = departmentID;            
+            obj.DepartmentID = departmentID;
 
-            db.Courses.Add(obj);
-            db.SaveChanges();
+            obj = _repository.CreateCourse(obj);
 
             return obj;
         }
-        
+
         /// <summary>
         /// Deletes the test object.
         /// </summary>
         /// <param name="toDelete">The object to delete.</param>
-        public static void DeleteTestObject(Course toDelete, StudentDB db)
+        /// <param name="_repository">The repository.</param>
+        public static void DeleteTestObject(CourseDTO toDelete, IStudentService _repository)
         {
-            db.Courses.Remove(toDelete);
-            db.SaveChanges();
+            _repository.DeleteCourse(toDelete.CourseID);
 
-            var originalDepartment = db.Departments.Where(x => x.DepartmentID == toDelete.DepartmentID).FirstOrDefault();
+            var originalDepartment = _repository.GetDepartment(toDelete.DepartmentID);
             if(originalDepartment != null)
             {
-                DepartmentTest.DeleteTestObject(originalDepartment, db);
+                DepartmentTest.DeleteTestObject(originalDepartment, _repository);
             }
         }
     }

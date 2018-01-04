@@ -200,17 +200,17 @@ namespace StudentService.Data
             throw new NotImplementedException();
         }
 
-        public CourseDTO CreateCourse(CourseDTO department)
+        public CourseDTO CreateCourse(CourseDTO course)
         {
             throw new NotImplementedException();
         }
 
-        public CourseDTO UpdateCourse(CourseDTO department)
+        public CourseDTO UpdateCourse(CourseDTO course)
         {
             throw new NotImplementedException();
         }
 
-        public int DeleteCourse(int departmentID)
+        public int DeleteCourse(int courseID)
         {
             throw new NotImplementedException();
         }

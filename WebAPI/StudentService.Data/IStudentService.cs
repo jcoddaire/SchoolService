@@ -106,23 +106,23 @@ namespace StudentService.Data
         /// <summary>
         /// Creates the course.
         /// </summary>
-        /// <param name="department">The department.</param>
+        /// <param name="course">The course.</param>
         /// <returns></returns>
-        CourseDTO CreateCourse(CourseDTO department);
+        CourseDTO CreateCourse(CourseDTO course);
 
         /// <summary>
         /// Updates the course.
         /// </summary>
-        /// <param name="department">The department.</param>
+        /// <param name="course">The course.</param>
         /// <returns></returns>
-        CourseDTO UpdateCourse(CourseDTO department);
+        CourseDTO UpdateCourse(CourseDTO course);
 
         /// <summary>
         /// Deletes the course.
         /// </summary>
-        /// <param name="departmentID">The department identifier.</param>
+        /// <param name="courseID">The course identifier.</param>
         /// <returns></returns>
-        int DeleteCourse(int departmentID);
+        int DeleteCourse(int courseID);
 
         #endregion
     }

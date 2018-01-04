@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
+using StudentService.DTOs;
 using StudentService.Data;
 
 namespace StudentService.Tests.Integration.Data
@@ -8,187 +9,202 @@ namespace StudentService.Tests.Integration.Data
     [TestClass]
     public class DepartmentTest : TestBase
     {
-        StudentDB db = new StudentDB();        
-
         [TestMethod]
         public void AddDepartment_Test()
         {
-            var obj = CreateTestDepartment(db);
+            var obj = CreateTestDepartment(Repository);
 
-            Assert.IsTrue(db.Departments.Any(x => x.DepartmentID == obj.DepartmentID));
+            Assert.IsTrue(Repository.GetAllDepartments().Any(x => x.DepartmentID == obj.DepartmentID));
 
-            DepartmentTest.DeleteTestObject(obj, db);
+            DepartmentTest.DeleteTestObject(obj, Repository);
         }
 
         [TestMethod]
         public void ReadDepartment_Test()
         {
-            var obj = CreateTestDepartment(db);
+            var obj = CreateTestDepartment(Repository);
+
+            Assert.IsNotNull(obj.DepartmentID);
+            Assert.IsNotNull(obj.Name);
+            Assert.IsNotNull(obj.StartDate);
+            Assert.IsNotNull(obj.Budget);
+            Assert.IsNull(obj.Administrator);
 
             Assert.IsTrue(obj.DepartmentID > 0);
-            Assert.IsNotNull(obj.Name);
-
-            Assert.IsNotNull(obj.StartDate);
             Assert.AreEqual(DateTime.Today, obj.StartDate);
-
-            Assert.IsNotNull(obj.Budget);
             Assert.AreEqual(1000000, obj.Budget);
 
-            Assert.IsNull(obj.Administrator);
-            
-            DepartmentTest.DeleteTestObject(obj, db);
+            DepartmentTest.DeleteTestObject(obj, Repository);
         }
 
         [TestMethod]
         public void DeleteDepartment_Test()
         {
-            var obj = CreateTestDepartment(db);            
-            
-            var currentCount = db.Departments.Count();
+            var obj = CreateTestDepartment(Repository);
 
-            DepartmentTest.DeleteTestObject(obj, db);
+            var currentCount = Repository.GetAllDepartments().Count();
 
-            Assert.IsTrue(db.Departments.Count() < currentCount);            
+            DepartmentTest.DeleteTestObject(obj, Repository);
+
+            Assert.IsTrue(Repository.GetAllDepartments().Count() < currentCount);            
         }
 
         [TestMethod]
         public void UpdateDepartment_Test_Name()
         {
-            var obj = CreateTestDepartment(db);
+            var obj = CreateTestDepartment(Repository);
 
-            //confirm they are saved in the database.
-            Assert.IsTrue(obj.DepartmentID > 0);
+            try
+            {
+                var randomName = Guid.NewGuid().ToString();
 
-            var randomName = Guid.NewGuid().ToString();
+                obj.Name = randomName;
 
-            obj.Name = randomName;
-            
-            db.Departments.Attach(obj);
-            var entry = db.Entry(obj);
-            entry.Property(e => e.Name).IsModified = true;
-            db.SaveChanges();
+                obj = Repository.UpdateDepartment(obj);
 
-            //confirm the object was updated.
-            var updated = db.Departments.Where(x => x.DepartmentID == obj.DepartmentID).FirstOrDefault();
+                //confirm the object was updated.
+                var updated = Repository.GetDepartment(obj.DepartmentID);
 
-            Assert.IsNotNull(updated);
-            Assert.AreEqual(randomName, updated.Name);
+                Assert.IsNotNull(updated);
+                Assert.AreEqual(randomName, updated.Name);
+            }
+            catch (Exception)
+            {
 
-            //Remove the test data.
-            DepartmentTest.DeleteTestObject(obj, db);
+                throw;
+            }
+            finally
+            {
+                //Remove the test data.
+                DepartmentTest.DeleteTestObject(obj, Repository);
+            }
         }
 
         [TestMethod]
         public void UpdateDepartment_Test_Budget()
         {
-            var obj = CreateTestDepartment(db);
+            var obj = CreateTestDepartment(Repository);
 
-            //confirm they are saved in the database.
-            Assert.IsTrue(obj.DepartmentID > 0);
+            try
+            {
+                var differentBudget = 1;
 
-            var differentBudget = 1;
+                obj.Budget = differentBudget;
 
-            obj.Budget = differentBudget;
+                obj = Repository.UpdateDepartment(obj);
 
-            db.Departments.Attach(obj);
-            var entry = db.Entry(obj);
-            entry.Property(e => e.Budget).IsModified = true;
-            db.SaveChanges();
+                //confirm the object was updated.
+                var updated = Repository.GetDepartment(obj.DepartmentID);
 
-            //confirm the object was updated.
-            var updated = db.Departments.Where(x => x.DepartmentID == obj.DepartmentID).FirstOrDefault();
+                Assert.IsNotNull(updated);
+                Assert.AreEqual(differentBudget, updated.Budget);
+            }
+            catch (Exception)
+            {
 
-            Assert.IsNotNull(updated);
-            Assert.AreEqual(differentBudget, updated.Budget);
-
-            //Remove the test data.
-            DepartmentTest.DeleteTestObject(obj, db);
+                throw;
+            }
+            finally
+            {
+                //Remove the test data.
+                DepartmentTest.DeleteTestObject(obj, Repository);
+            }
         }
         
         [TestMethod]
         public void UpdateDepartment_Test_StartDate()
         {
-            var obj = CreateTestDepartment(db);
+            var obj = CreateTestDepartment(Repository);
 
-            //confirm they are saved in the database.
-            Assert.IsTrue(obj.DepartmentID > 0);
+            try
+            {
+                var differentDate = new DateTime(1999, 12, 31);
 
-            var differentDate = new DateTime(1999, 12, 31);
+                obj.StartDate = differentDate;
 
-            obj.StartDate = differentDate;
+                obj = Repository.UpdateDepartment(obj);
 
-            db.Departments.Attach(obj);
-            var entry = db.Entry(obj);
-            entry.Property(e => e.StartDate).IsModified = true;
-            db.SaveChanges();
+                //confirm the object was updated.
+                var updated = Repository.GetDepartment(obj.DepartmentID);
 
-            //confirm the object was updated.
-            var updated = db.Departments.Where(x => x.DepartmentID == obj.DepartmentID).FirstOrDefault();
+                Assert.IsNotNull(updated);
+                Assert.AreEqual(differentDate, updated.StartDate);
+            }
+            catch (Exception)
+            {
 
-            Assert.IsNotNull(updated);
-            Assert.AreEqual(differentDate, updated.StartDate);
-
-            //Remove the test data.
-            DepartmentTest.DeleteTestObject(obj, db);
+                throw;
+            }
+            finally
+            {
+                //Remove the test data.
+                DepartmentTest.DeleteTestObject(obj, Repository);
+            }
         }
         
         [TestMethod]
         public void UpdateDepartment_Test_Administrator()
         {
-            var obj = CreateTestDepartment(db);
+            var obj = CreateTestDepartment(Repository);
                                     
             var person = PersonTest.CreateTestPerson(Repository);
 
-            obj.Administrator = person.PersonID;
-            
-            db.Departments.Attach(obj);
-            var entry = db.Entry(obj);
-            entry.Property(e => e.Administrator).IsModified = true;
-            db.SaveChanges();
+            try
+            {
+                obj.Administrator = person.PersonID;
 
-            //confirm the object was updated.
-            var updated = db.Departments.Where(x => x.DepartmentID == obj.DepartmentID).FirstOrDefault();
+                obj = Repository.UpdateDepartment(obj);
 
-            Assert.IsNotNull(updated);
-            Assert.AreEqual(person.PersonID, updated.Administrator);
+                //confirm the object was updated.
+                var updated = Repository.GetDepartment(obj.DepartmentID);
 
-            //Remove the test data.
-            DepartmentTest.DeleteTestObject(obj, db);
-            PersonTest.DeleteTestObject(person, Repository);
+                Assert.IsNotNull(updated);
+                Assert.AreEqual(person.PersonID, updated.Administrator);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+                //Remove the test data.
+                DepartmentTest.DeleteTestObject(obj, Repository);
+                PersonTest.DeleteTestObject(person, Repository);
+            }
         }
 
         /// <summary>
         /// Creates the test department.
         /// </summary>
-        /// <param name="db">The database.</param>
+        /// <param name="_repository">The database.</param>
         /// <returns></returns>
-        public static Department CreateTestDepartment(StudentDB db)
+        public static DepartmentDTO CreateTestDepartment(IStudentService _repository)
         {            
             var departmentName = Guid.NewGuid().ToString();
             decimal budget = 1000000;
             var startDate = DateTime.Today;            
             
-            var obj = new Department();
+            var obj = new DepartmentDTO();
             obj.Name = departmentName;
             obj.Budget = budget;
             obj.StartDate = startDate;            
             
-            obj.DepartmentID = db.Departments.Max(x => x.DepartmentID) + 1;
+            obj.DepartmentID = _repository.GetAllDepartments().Max(x => x.DepartmentID) + 1;
 
-            db.Departments.Add(obj);
-            db.SaveChanges();
+            obj = _repository.CreateDepartment(obj);
 
             return obj;
         }
-        
+
         /// <summary>
         /// Deletes the test object.
         /// </summary>
         /// <param name="toDelete">The object to delete.</param>
-        public static void DeleteTestObject(Department toDelete, StudentDB db)
+        /// <param name="_repository">The repository.</param>
+        public static void DeleteTestObject(DepartmentDTO toDelete, IStudentService _repository)
         {
-            db.Departments.Remove(toDelete);            
-            db.SaveChanges();
+            _repository.DeleteDepartment(toDelete.DepartmentID);
         }
     }
 }

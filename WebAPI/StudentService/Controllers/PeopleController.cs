@@ -12,7 +12,7 @@ namespace StudentService.Controllers
     public class PeopleController : ControllerBase
     {
         // GET api/People
-        public List<PersonDTO> Get()
+        public IEnumerable<PersonDTO> Get()
         {
             return Repository.GetAllPersons();
         }

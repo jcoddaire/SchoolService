@@ -24,6 +24,8 @@ namespace StudentService.Data
             }
         }
 
+
+        #region People Methods
         public StudentServiceRepository()
         {
 
@@ -33,7 +35,7 @@ namespace StudentService.Data
         /// Gets all people.
         /// </summary>
         /// <returns></returns>
-        public List<PersonDTO> GetAllPersons()
+        public IEnumerable<PersonDTO> GetAllPersons()
         {
             var sourcePeople = Database.People.Select(
                 x => new PersonDTO()
@@ -156,5 +158,62 @@ namespace StudentService.Data
             }
             return -1;
         }
+
+        #endregion
+
+        #region Department Methods
+
+        public IEnumerable<DepartmentDTO> GetAllDepartments()
+        {
+            throw new NotImplementedException();
+        }
+
+        public DepartmentDTO GetDepartment(int departmentID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DepartmentDTO CreateDepartment(DepartmentDTO department)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DepartmentDTO UpdateDepartment(DepartmentDTO department)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int DeleteDepartment(int departmentID)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
+        #region Course Methods
+        public IEnumerable<CourseDTO> GetAllCourses()
+        {
+            throw new NotImplementedException();
+        }
+
+        public CourseDTO GetCourse(int courseID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public CourseDTO CreateCourse(CourseDTO department)
+        {
+            throw new NotImplementedException();
+        }
+
+        public CourseDTO UpdateCourse(CourseDTO department)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int DeleteCourse(int departmentID)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
     }
 }

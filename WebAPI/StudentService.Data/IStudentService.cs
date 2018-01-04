@@ -9,11 +9,12 @@ namespace StudentService.Data
 {
     public interface IStudentService
     {
+        #region People Methods
         /// <summary>
         /// Gets all people.
         /// </summary>
         /// <returns></returns>
-        List<PersonDTO> GetAllPersons();
+        IEnumerable<PersonDTO> GetAllPersons();
 
         /// <summary>
         /// Gets the person.
@@ -47,5 +48,82 @@ namespace StudentService.Data
         /// If something failed, returns -1.
         /// </returns>
         int DeletePerson(int personID);
+        #endregion
+
+        #region Department Methods
+        
+        /// <summary>
+        /// Gets all departments.
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<DepartmentDTO> GetAllDepartments();
+
+        /// <summary>
+        /// Gets the department.
+        /// </summary>
+        /// <param name="departmentID">The department identifier.</param>
+        /// <returns></returns>
+        DepartmentDTO GetDepartment(int departmentID);
+
+        /// <summary>
+        /// Creates the department.
+        /// </summary>
+        /// <param name="department">The department.</param>
+        /// <returns></returns>
+        DepartmentDTO CreateDepartment(DepartmentDTO department);
+
+        /// <summary>
+        /// Updates the department.
+        /// </summary>
+        /// <param name="department">The department.</param>
+        /// <returns></returns>
+        DepartmentDTO UpdateDepartment(DepartmentDTO department);
+
+        /// <summary>
+        /// Deletes the department.
+        /// </summary>
+        /// <param name="departmentID">The department identifier.</param>
+        /// <returns></returns>
+        int DeleteDepartment(int departmentID);
+
+        #endregion
+
+        #region Course Methods
+
+        /// <summary>
+        /// Gets all courses.
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<CourseDTO> GetAllCourses();
+
+        /// <summary>
+        /// Gets the course.
+        /// </summary>
+        /// <param name="courseID">The course identifier.</param>
+        /// <returns></returns>
+        CourseDTO GetCourse(int courseID);
+
+        /// <summary>
+        /// Creates the course.
+        /// </summary>
+        /// <param name="department">The department.</param>
+        /// <returns></returns>
+        CourseDTO CreateCourse(CourseDTO department);
+
+        /// <summary>
+        /// Updates the course.
+        /// </summary>
+        /// <param name="department">The department.</param>
+        /// <returns></returns>
+        CourseDTO UpdateCourse(CourseDTO department);
+
+        /// <summary>
+        /// Deletes the course.
+        /// </summary>
+        /// <param name="departmentID">The department identifier.</param>
+        /// <returns></returns>
+        int DeleteCourse(int departmentID);
+
+        #endregion
     }
 }

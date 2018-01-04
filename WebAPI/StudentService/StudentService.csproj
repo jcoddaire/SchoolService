@@ -128,6 +128,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\ControllerBase.cs" />
     <Compile Include="Controllers\PeopleController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -160,6 +161,10 @@
     <ProjectReference Include="..\StudentService.Data\StudentService.Data.csproj">
       <Project>{bd0173b5-8bb9-4f2a-abf2-de03375c8560}</Project>
       <Name>StudentService.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\StudentService.DTOs\StudentService.DTOs.csproj">
+      <Project>{f2e7a223-f18d-4cd9-bd6f-39378ca9274d}</Project>
+      <Name>StudentService.DTOs</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

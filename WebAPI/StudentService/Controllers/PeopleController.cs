@@ -5,29 +5,27 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using StudentService.Data;
-using System.Data.Entity;
+using StudentService.DTOs;
 
 namespace StudentService.Controllers
 {
-    public class PeopleController : ApiController
+    public class PeopleController : ControllerBase
     {
-        StudentDB db = new StudentDB();
-
         // GET api/People
-        public List<Person> Get()
+        public List<PersonDTO> Get()
         {
-            return db.People.ToList();
+            return Repository.GetAllPersons();
         }
 
         // GET api/People/5
-        public Person Get(int id)
+        public PersonDTO Get(int id)
         {
             if(id <= 0)
             {
                 return null;
             }
 
-            var target = db.People.Where(x => x.PersonID == id).FirstOrDefault();
+            var target = Repository.GetPerson(id);
             if(target != null && target.PersonID > 0)
             {
                 return target;

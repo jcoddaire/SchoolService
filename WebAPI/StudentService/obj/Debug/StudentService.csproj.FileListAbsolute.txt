@@ -245,3 +245,5 @@ C:\Code\SchoolService\WebAPI\StudentService\obj\Debug\StudentService.csprojResol
 C:\Code\SchoolService\WebAPI\StudentService\obj\Debug\StudentService.csproj.CoreCompileInputs.cache
 C:\Code\SchoolService\WebAPI\StudentService\obj\Debug\StudentService.dll
 C:\Code\SchoolService\WebAPI\StudentService\obj\Debug\StudentService.pdb
+C:\Code\SchoolService\WebAPI\StudentService\bin\StudentService.DTOs.dll
+C:\Code\SchoolService\WebAPI\StudentService\bin\StudentService.DTOs.pdb

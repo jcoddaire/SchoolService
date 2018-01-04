@@ -29,3 +29,6 @@ C:\Code\SchoolService\WebAPI\StudentService.Data\bin\Debug\EntityFramework.SqlSe
 C:\Code\SchoolService\WebAPI\StudentService.Data\obj\Debug\StudentService.Data.csproj.CoreCompileInputs.cache
 C:\Code\SchoolService\WebAPI\StudentService.Data\obj\Debug\StudentService.Data.dll
 C:\Code\SchoolService\WebAPI\StudentService.Data\obj\Debug\StudentService.Data.pdb
+C:\Code\SchoolService\WebAPI\StudentService.Data\obj\Debug\StudentService.Data.csprojResolveAssemblyReference.cache
+C:\Code\SchoolService\WebAPI\StudentService.Data\bin\Debug\StudentService.DTOs.dll
+C:\Code\SchoolService\WebAPI\StudentService.Data\bin\Debug\StudentService.DTOs.pdb

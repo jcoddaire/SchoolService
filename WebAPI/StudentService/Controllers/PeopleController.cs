@@ -48,6 +48,18 @@ namespace StudentService.Controllers
         // DELETE api/values/5
         public void Delete(int id)
         {
+            if (id <= 0)
+            {
+                //Return 404 not found.
+            }
+
+            var result = Repository.DeletePerson(id);
+            if (result > 0)
+            {
+                //return 204 no content.
+            }
+
+            //cannot find the id, throw a 404.            
         }
     }
 }

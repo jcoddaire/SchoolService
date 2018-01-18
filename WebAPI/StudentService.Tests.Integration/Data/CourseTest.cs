@@ -14,9 +14,18 @@ namespace StudentService.Tests.Integration.Data
         {
             var obj = CreateTestCourse(Repository);
 
-            Assert.IsTrue(Repository.GetAllCourses().Any(x => x.CourseID == obj.CourseID));
-
-            CourseTest.DeleteTestObject(obj, Repository);
+            try
+            {
+                Assert.IsTrue(Repository.GetAllCourses().Any(x => x.CourseID == obj.CourseID));
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                CourseTest.DeleteTestObject(obj, Repository);
+            }
         }
 
         [TestMethod]

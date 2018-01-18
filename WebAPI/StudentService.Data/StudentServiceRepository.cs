@@ -266,29 +266,124 @@ namespace StudentService.Data
         #endregion
 
         #region Course Methods
+        
+        /// <summary>
+        /// Gets all courses.
+        /// </summary>
+        /// <returns>A list of courses.</returns>
         public IEnumerable<CourseDTO> GetAllCourses()
         {
-            throw new NotImplementedException();
+            var courses = Database.Courses.Select(
+                x => new CourseDTO()
+                {
+                    CourseID = x.CourseID,
+                    Title = x.Title,
+                    Credits = x.Credits,
+                    DepartmentID = x.DepartmentID
+                    
+                }).ToList();
+
+            return courses;
         }
 
+        /// <summary>
+        /// Gets the course.
+        /// </summary>
+        /// <param name="courseID">The course identifier.</param>
+        /// <returns>The Course DTO.</returns>
         public CourseDTO GetCourse(int courseID)
         {
-            throw new NotImplementedException();
+            if (courseID <= 0)
+            {
+                return null;
+            }
+
+            var target = Database.Courses.Where(c => c.CourseID == courseID).Select(
+                x => new CourseDTO()
+                {
+                    CourseID = x.CourseID,
+                    Title = x.Title,
+                    Credits = x.Credits,
+                    DepartmentID = x.DepartmentID
+
+                }).FirstOrDefault();
+
+            if (target != null && target.CourseID > 0)
+            {
+                return target;
+            }
+
+            return null;
         }
 
+        /// <summary>
+        /// Creates the course.
+        /// </summary>
+        /// <param name="course">The course.</param>
+        /// <returns>The course.</returns>
         public CourseDTO CreateCourse(CourseDTO course)
         {
-            throw new NotImplementedException();
+            var newItem = new Course
+            {
+                CourseID = course.CourseID,
+                Title = course.Title,
+                Credits = course.Credits,
+                DepartmentID = course.DepartmentID
+            };
+
+            Database.Courses.Add(newItem);
+            Database.SaveChanges();
+
+            return course;
         }
 
+        /// <summary>
+        /// Updates the course.
+        /// </summary>
+        /// <param name="course">The course.</param>
+        /// <returns></returns>
+        /// <exception cref="KeyNotFoundException">Could not find a matching item in the dataset.</exception>
         public CourseDTO UpdateCourse(CourseDTO course)
         {
-            throw new NotImplementedException();
+            var changedTarget = Database.Courses.Where(p => p.CourseID == course.CourseID).FirstOrDefault();
+            if (changedTarget == null || changedTarget.CourseID != course.CourseID)
+            {
+                throw new KeyNotFoundException("Could not find a matching item in the dataset.");
+            }
+
+            //changedTarget.CourseID = course.CourseID; //this should never happen. Otherwise that ^^^ check will fail.
+            changedTarget.Title = course.Title;
+            changedTarget.Credits = course.Credits;
+            changedTarget.DepartmentID = course.DepartmentID;
+
+            Database.Courses.Attach(changedTarget);
+
+            var entry = Database.Entry(changedTarget);
+            //entry.Property(e => e.CourseID).IsModified = true;
+            entry.Property(e => e.Title).IsModified = true;
+            entry.Property(e => e.Credits).IsModified = true;
+            entry.Property(e => e.DepartmentID).IsModified = true;
+
+            Database.SaveChanges();
+
+            return course;
         }
 
+        /// <summary>
+        /// Deletes the course.
+        /// </summary>
+        /// <param name="courseID">The course identifier.</param>
+        /// <returns>The number of rows affected. Returns -1 if an error occured.</returns>
         public int DeleteCourse(int courseID)
         {
-            throw new NotImplementedException();
+            var target = Database.Courses.Where(x => x.CourseID == courseID).FirstOrDefault();
+
+            if (target != null && target.CourseID == courseID)
+            {
+                Database.Courses.Remove(target);
+                return Database.SaveChanges();
+            }
+            return -1;
         }
         #endregion
     }

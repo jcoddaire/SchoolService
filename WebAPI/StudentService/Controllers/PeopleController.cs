@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using StudentService.Data;
 using StudentService.DTOs;
 
 namespace StudentService.Controllers
@@ -22,7 +21,7 @@ namespace StudentService.Controllers
         {
             if(id <= 0)
             {
-                return null;
+                throw new HttpResponseException(HttpStatusCode.NotFound);
             }
 
             var target = Repository.GetPerson(id);
@@ -32,34 +31,90 @@ namespace StudentService.Controllers
             }
 
             //cannot find it, throw a 404.
-            return null;
+            throw new HttpResponseException(HttpStatusCode.NotFound);
         }
 
         // POST api/values
-        public void Post([FromBody]string value)
+        [HttpPost]
+        public PersonDTO Post(PersonDTO person)
         {
+            if(person == null)
+            {
+                //return 400 bad reqeust.
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+            }
+
+            //check data.
+            //Not everyone has a name. Null / empty string is all valid. SO a totally empty PersonDTO object is valid.
+
+            person = Repository.CreatePerson(person);
+
+            return person;
         }
 
         // PUT api/values/5
-        public void Put(int id, [FromBody]string value)
+        [HttpPut]
+        public PersonDTO Put(PersonDTO person)
         {
+            if (person == null)
+            {
+                //return 400 bad reqeust.
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+            }
+
+            if(person.PersonID <= 0)
+            {
+                //return 404 not found.
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            }
+
+            var foundPerson = Repository.GetPerson(person.PersonID);
+            if(foundPerson == null)
+            {
+                //return 404 not found.
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            }
+
+            if(foundPerson.FirstName.Equals(person.FirstName)
+                && foundPerson.LastName.Equals(person.LastName)                
+                && foundPerson.HireDate.Equals(person.HireDate)
+                && foundPerson.EnrollmentDate.Equals(person.EnrollmentDate))
+            {
+                //There are no changes to the object.
+                //return 204 no change.
+                return person;
+            }
+                        
+            person = Repository.UpdatePerson(person);
+
+            return person;
         }
 
         // DELETE api/values/5
-        public void Delete(int id)
+        public HttpResponseMessage Delete(int id)
         {
             if (id <= 0)
             {
-                //Return 404 not found.
+                //Return 404 not found. Could also return 400.
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            }
+
+            var foundPerson = Repository.GetPerson(id);
+            if (foundPerson == null)
+            {
+                //return 404 not found.
+                throw new HttpResponseException(HttpStatusCode.NotFound);
             }
 
             var result = Repository.DeletePerson(id);
             if (result > 0)
             {
                 //return 204 no content.
+                return new HttpResponseMessage(HttpStatusCode.NoContent);
             }
 
-            //cannot find the id, throw a 404.            
+            //something went wrong. TODO: find a better way to handle this.
+            throw new HttpResponseException(HttpStatusCode.InternalServerError);
         }
     }
 }

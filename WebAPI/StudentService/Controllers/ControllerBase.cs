@@ -13,10 +13,14 @@ namespace StudentService.Controllers
             {
                 if (_repository == null)
                 {
-                    _repository = new StudentServiceRepository();
+                    _repository = new StudentServiceRepository(new StudentDB());
                 }
 
                 return _repository;
+            }
+            set
+            {
+                _repository = value;
             }
         }
     }

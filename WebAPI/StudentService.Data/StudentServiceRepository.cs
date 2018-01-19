@@ -23,9 +23,9 @@ namespace StudentService.Data
                 return _Database;
             }
         }
-        public StudentServiceRepository()
+        public StudentServiceRepository(StudentDB db)
         {
-
+            _Database = db;
         }
 
         #region People Methods

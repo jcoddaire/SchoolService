@@ -3,10 +3,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using StudentService.DTOs;
 using StudentService.Data;
+using System.Diagnostics.CodeAnalysis;
 
 namespace StudentService.Tests.Integration.Data
 {
     [TestClass]
+    [ExcludeFromCodeCoverage]
     public class CourseTest : TestBase
     {
         [TestMethod]

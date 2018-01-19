@@ -4,16 +4,27 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using StudentService.Data;
 using StudentService.DTOs;
 
 namespace StudentService.Controllers
 {
     public class PeopleController : ControllerBase
     {
+        public PeopleController()
+        {
+            
+        }
+
+        public PeopleController(IStudentService repository)
+        {
+            Repository = repository;
+        }
+
         // GET api/People
         public IEnumerable<PersonDTO> Get()
         {
-            return Repository.GetAllPersons();
+            return Repository.GetAllPersons();            
         }
 
         // GET api/People/5

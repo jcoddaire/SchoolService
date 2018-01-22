@@ -57,6 +57,7 @@ namespace StudentService.WebAPI.Controllers
 
             //check data.
             //Not everyone has a name. Null / empty string is all valid. SO a totally empty PersonDTO object is valid.
+            //See this, point 40. http://www.kalzumeus.com/2010/06/17/falsehoods-programmers-believe-about-names/
 
             person = Repository.CreatePerson(person);
 

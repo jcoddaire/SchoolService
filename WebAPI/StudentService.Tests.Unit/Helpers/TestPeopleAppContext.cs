@@ -3,7 +3,7 @@ using StudentService.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-
+using System.Linq;
 
 namespace StudentService.Tests.Unit.Helpers
 {
@@ -24,22 +24,33 @@ namespace StudentService.Tests.Unit.Helpers
 
         public PersonDTO GetPerson(int personID)
         {
-            throw new NotImplementedException();
+            return People.Where(x => x.PersonID == personID).FirstOrDefault();
         }
 
         public PersonDTO CreatePerson(PersonDTO person)
         {
-            throw new NotImplementedException();
+            person.PersonID = People.Max(x => x.PersonID) + 1;
+
+            People.Add(person);
+
+            return person;
         }
 
         public PersonDTO UpdatePerson(PersonDTO person)
         {
-            throw new NotImplementedException();
+            People.Remove(People.Where(x => x.PersonID == person.PersonID).First());
+            People.Add(person);
+
+            return person;
         }
 
         public int DeletePerson(int personID)
         {
-            throw new NotImplementedException();
+            if(People.Remove(People.Where(x => x.PersonID == personID).First()))
+            {
+                return 1;
+            }
+            return -1;
         }
 
         public IEnumerable<DepartmentDTO> GetAllDepartments()

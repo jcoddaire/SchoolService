@@ -38,6 +38,6 @@ namespace StudentService.Tests.Unit.Helpers
             };
 
             return people;
-        }
+        }        
     }
 }

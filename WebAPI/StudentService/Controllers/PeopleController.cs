@@ -7,7 +7,7 @@ using System.Web.Http;
 using StudentService.Data;
 using StudentService.DTOs;
 
-namespace StudentService.Controllers
+namespace StudentService.WebAPI.Controllers
 {
     public class PeopleController : ControllerBase
     {

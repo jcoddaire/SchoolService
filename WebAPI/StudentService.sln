@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentService", "StudentService\StudentService.csproj", "{6DD983B5-A197-4DA8-BB60-BC538A2026B7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentService.WebAPI", "StudentService\StudentService.WebAPI.csproj", "{6DD983B5-A197-4DA8-BB60-BC538A2026B7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentService.Data", "StudentService.Data\StudentService.Data.csproj", "{BD0173B5-8BB9-4F2A-ABF2-DE03375C8560}"
 EndProject
@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentService.Tests.Integr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentService.DTOs", "StudentService.DTOs\StudentService.DTOs.csproj", "{F2E7A223-F18D-4CD9-BD6F-39378CA9274D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentService.Tests.Unit", "StudentService.Tests.Unit\StudentService.Tests.Unit.csproj", "{11DF42AA-3671-4C83-A1CC-058A20D7C5D1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentService.Tests.Unit", "StudentService.Tests.Unit\StudentService.Tests.Unit.csproj", "{3F3610C9-1DC3-46D1-B7C1-9B058AD18D93}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +35,10 @@ Global
 		{F2E7A223-F18D-4CD9-BD6F-39378CA9274D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2E7A223-F18D-4CD9-BD6F-39378CA9274D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2E7A223-F18D-4CD9-BD6F-39378CA9274D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{11DF42AA-3671-4C83-A1CC-058A20D7C5D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{11DF42AA-3671-4C83-A1CC-058A20D7C5D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{11DF42AA-3671-4C83-A1CC-058A20D7C5D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{11DF42AA-3671-4C83-A1CC-058A20D7C5D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F3610C9-1DC3-46D1-B7C1-9B058AD18D93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F3610C9-1DC3-46D1-B7C1-9B058AD18D93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F3610C9-1DC3-46D1-B7C1-9B058AD18D93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F3610C9-1DC3-46D1-B7C1-9B058AD18D93}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

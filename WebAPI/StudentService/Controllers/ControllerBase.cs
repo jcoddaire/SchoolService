@@ -1,7 +1,7 @@
 ﻿using StudentService.Data;
 using System.Web.Http;
 
-namespace StudentService.Controllers
+namespace StudentService.WebAPI.Controllers
 {
     public class ControllerBase : ApiController
     {

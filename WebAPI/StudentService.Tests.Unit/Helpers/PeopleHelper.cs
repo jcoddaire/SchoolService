@@ -4,7 +4,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics.CodeAnalysis;
 using System.Collections.Generic;
 using StudentService.DTOs;
-using StudentService.Controllers;
 using StudentService.Data;
 using Moq;
 

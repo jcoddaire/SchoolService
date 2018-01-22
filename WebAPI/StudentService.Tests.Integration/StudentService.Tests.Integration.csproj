@@ -76,9 +76,9 @@
       <Project>{f2e7a223-f18d-4cd9-bd6f-39378ca9274d}</Project>
       <Name>StudentService.DTOs</Name>
     </ProjectReference>
-    <ProjectReference Include="..\StudentService\StudentService.csproj">
+    <ProjectReference Include="..\StudentService\StudentService.WebAPI.csproj">
       <Project>{6dd983b5-a197-4da8-bb60-bc538a2026b7}</Project>
-      <Name>StudentService</Name>
+      <Name>StudentService.WebAPI</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

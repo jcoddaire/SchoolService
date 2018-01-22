@@ -16,3 +16,17 @@ This is a simple demo project. It includes things I'm learning, practicing, or i
 - Examples for newer tech - .NET Core is interesting.
 - Examples for older tech - DataTables, ASMX services, etc.
 - The auto-build thing I see on OSS projects.
+
+## To Iterate:
+
+### WebAPI
+
+- Add authorization.
+
+### Entity Framework
+
+- Add environments - Dev, Cert, Prod.
+
+### Tests (Unit, Integration)
+
+- Add environments.

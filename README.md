@@ -10,7 +10,7 @@ This is a simple demo project. It includes things I'm learning, practicing, or i
 - Integration Tests
 - Microsoft SQL Server 2014
 
-##To Add:
+## To Add:
 
 - Front end client / web app. Probably going to be using Angular or React, haven't decided which yet.
 - Examles for newer tech - .NET Core is interesting.

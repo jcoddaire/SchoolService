@@ -22,7 +22,7 @@ This is a simple demo project. It includes things I'm learning, practicing, or i
 ### WebAPI
 
 - Add authorization.
-- Add global error handling. Currently deleting someone who has foreign key constraints to other tables results in some pretty nasty errors.
+- Add global error handling.
 - Add logging. I'll have to investigate what free options exist.
 
 ### Entity Framework

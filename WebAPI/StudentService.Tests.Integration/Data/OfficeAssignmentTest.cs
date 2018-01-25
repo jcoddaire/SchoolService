@@ -4,6 +4,7 @@ using System.Linq;
 using StudentService.DTOs;
 using StudentService.Data;
 using System.Diagnostics.CodeAnalysis;
+using System.Collections.Generic;
 
 namespace StudentService.Tests.Integration.Data
 {
@@ -31,6 +32,51 @@ namespace StudentService.Tests.Integration.Data
         }
 
         [TestMethod]
+        public void AddOfficeAssignment_Test_Invalid_Null()
+        {
+            try
+            {
+                var obj = Repository.CreateOfficeAssignment(null);
+            }
+            catch (ArgumentNullException ex)
+            {
+                Assert.IsTrue(ex.Message.Contains("assignment"));
+            }
+        }
+
+        [TestMethod]
+        public void AddOfficeAssignment_Test_Invalid_Zero()
+        {
+            var obj = new OfficeAssignmentDTO { InstructorID = 0 };
+
+            try
+            {
+                obj = Repository.CreateOfficeAssignment(obj);
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                Assert.IsTrue(ex.Message.Contains("assignment.InstructorID"));
+            }
+        }
+
+        [TestMethod]
+        public void AddOfficeAssignment_Test_Invalid_NotFound()
+        {
+            //Find an ID that is not in the dataset.
+            var notUsedID = GetUnusedPersonID(Repository);
+            var obj = new OfficeAssignmentDTO { InstructorID = notUsedID };
+
+            try
+            {
+                obj = Repository.CreateOfficeAssignment(obj);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                Assert.IsTrue(ex.Message.Contains("The InstructorID '"));
+            }
+        }
+
+        [TestMethod]
         public void ReadOfficeAssignment_Test()
         {
             var obj = CreateTestOfficeAssignment(Repository);
@@ -43,7 +89,54 @@ namespace StudentService.Tests.Integration.Data
 
             OfficeAssignmentTest.DeleteTestObject(obj, Repository);
         }
-        
+
+        [TestMethod]
+        public void GetOfficeAssignment_Invalid_InstructorID_Zero()
+        {
+            var result = Repository.GetOfficeAssignment(0);
+            Assert.IsNull(result);            
+        }
+
+        [TestMethod]
+        public void GetOfficeAssignment_Invalid_InstructorID_NotExists()
+        {
+            //Find an ID that is not in the dataset.
+            var notUsedID = GetUnusedPersonID(Repository);
+            
+            var result = Repository.GetOfficeAssignment(notUsedID);
+            Assert.IsNull(result);
+        }
+
+        /// <summary>
+        /// Finds a Person ID that is not in the system.
+        /// </summary>
+        /// <param name="_repository">The repository.</param>
+        /// <returns></returns>
+        private int GetUnusedPersonID(IStudentService _repository)
+        {
+            var assignments = _repository.GetAllPersons();
+
+            for (int ii = 1; ii < Int32.MaxValue; ii++)
+            {
+                bool isUsed = false;
+
+                foreach (var assignment in assignments)
+                {
+                    if (assignment.PersonID.Equals(ii))
+                    {
+                        isUsed = true;
+                        break;
+                    }
+                }
+
+                if (!isUsed)
+                {
+                    return ii;
+                }
+            }
+            return 0;
+        }
+
         [TestMethod]
         public void DeleteOfficeAssignment_Test()
         {
@@ -54,6 +147,23 @@ namespace StudentService.Tests.Integration.Data
             OfficeAssignmentTest.DeleteTestObject(obj, Repository);
 
             Assert.IsTrue(Repository.GetAllOfficeAssignments().Count() < currentCount);
+        }
+        
+        [TestMethod]
+        public void UpdateOfficeAssignment_Test_Invalid_InstructorID()
+        {
+            //Find an ID that is not in the dataset.
+            var notUsedID = GetUnusedPersonID(Repository);
+            var obj = new OfficeAssignmentDTO { InstructorID = notUsedID };
+            
+            try
+            {
+                obj = Repository.UpdateOfficeAssignment(obj);                
+            }
+            catch (KeyNotFoundException ex)
+            {
+                Assert.IsTrue(ex.Message.Contains("Could not find a matching item in the dataset."));
+            }
         }
 
         [TestMethod]

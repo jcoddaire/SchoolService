@@ -153,7 +153,7 @@ namespace StudentService.Data
             if(target != null && target.PersonID == personID)
             {
                 Database.People.Remove(target);
-                return Database.SaveChanges();                
+                return Database.SaveChanges();
             }
             return -1;
         }
@@ -385,6 +385,81 @@ namespace StudentService.Data
             }
             return -1;
         }
+        #endregion
+
+        #region Office Assignments
+        public OfficeAssignmentDTO GetOfficeAssignment(int personID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public OfficeAssignmentDTO GetAllOfficeAssignments()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Creates the office assignment.
+        /// </summary>
+        /// <param name="assignment">The assignment.</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">assignment - Assignment cannot be null</exception>
+        /// <exception cref="ArgumentOutOfRangeException">assignment.InstructorID - Must be greater than 0!</exception>
+        /// <exception cref="KeyNotFoundException"></exception>
+        public OfficeAssignmentDTO CreateOfficeAssignment(OfficeAssignmentDTO assignment)
+        {
+            if(assignment == null)
+            {
+                throw new ArgumentNullException("assignment", "Assignment cannot be null");
+            }
+            if(assignment.InstructorID <= 0)
+            {
+                throw new ArgumentOutOfRangeException("assignment.InstructorID", "Must be greater than 0!");
+            }
+
+            if(!Database.People.Any(x => x.PersonID == assignment.InstructorID))
+            {
+                throw new KeyNotFoundException($"The InstructorID '{assignment.InstructorID}' was not found in the system.");
+            }
+
+            DeleteOfficeAssignment(assignment.InstructorID);
+
+            var newOfficeAssignment = new OfficeAssignment
+            {
+                InstructorID = assignment.InstructorID,
+                Location = assignment.Location,
+                Timestamp = assignment.Timestamp
+            };
+
+            Database.OfficeAssignments.Add(newOfficeAssignment);
+            Database.SaveChanges();
+
+            return assignment;
+        }
+
+        public OfficeAssignmentDTO UpdateOfficeAssignment(OfficeAssignmentDTO assignment)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Deletes the office assignment.
+        /// </summary>
+        /// <param name="personID">The person identifier.</param>
+        /// <returns></returns>
+        public int DeleteOfficeAssignment(int personID)
+        {
+
+            var target = Database.OfficeAssignments.Where(x => x.InstructorID == personID).FirstOrDefault();
+
+            if (target != null && target.InstructorID == personID)
+            {
+                Database.OfficeAssignments.Remove(target);
+                return Database.SaveChanges();
+            }
+            return -1;
+        }
+
         #endregion
     }
 }

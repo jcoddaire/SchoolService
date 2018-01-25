@@ -197,6 +197,32 @@ namespace StudentService.Tests.Integration.Data
             }
         }
 
+        [TestMethod]
+        public void DeletePerson_Test_PersonIsAssignedToCourse()
+        {
+            //create a person.
+            var currentPeopleCount = Repository.GetAllPersons().Count();
+
+            var obj = new PersonDTO();
+            obj.FirstName = "Test";
+            obj.LastName = "Subject";
+
+            obj = Repository.CreatePerson(obj);
+
+            Assert.IsTrue(Repository.GetAllPersons().Count() > currentPeopleCount);
+
+            //create an Office Assignment.
+
+            var officeAssignment = new OfficeAssignmentDTO { InstructorID = obj.PersonID, Location = "321 Test Location" };
+            officeAssignment = Repository.CreateOfficeAssignment(officeAssignment);
+
+            //Attempt to delete the person.
+            //Entity framework should figure out there's a FK constraint between the two objects.
+            PersonTest.DeleteTestObject(obj, Repository);
+
+            Assert.AreEqual(currentPeopleCount, Repository.GetAllPersons().Count());
+        }
+
         /// <summary>
         /// Creates the test person.
         /// </summary>

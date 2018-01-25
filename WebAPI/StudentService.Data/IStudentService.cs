@@ -125,5 +125,43 @@ namespace StudentService.Data
         int DeleteCourse(int courseID);
 
         #endregion
+
+        #region Office Assignments
+
+        /// <summary>
+        /// Gets the office assignment.
+        /// </summary>
+        /// <param name="personID">The person identifier.</param>
+        /// <returns></returns>
+        OfficeAssignmentDTO GetOfficeAssignment(int personID);
+
+        /// <summary>
+        /// Gets all office assignments.
+        /// </summary>
+        /// <returns></returns>
+        OfficeAssignmentDTO GetAllOfficeAssignments();
+
+        /// <summary>
+        /// Creates the office assignment.
+        /// </summary>
+        /// <param name="assignment">The assignment.</param>
+        /// <returns></returns>
+        OfficeAssignmentDTO CreateOfficeAssignment(OfficeAssignmentDTO assignment);
+
+        /// <summary>
+        /// Updates the office assignment.
+        /// </summary>
+        /// <param name="assignment">The assignment.</param>
+        /// <returns></returns>
+        OfficeAssignmentDTO UpdateOfficeAssignment(OfficeAssignmentDTO assignment);
+
+        /// <summary>
+        /// Deletes the office assignment.
+        /// </summary>
+        /// <param name="personID">The person identifier.</param>
+        /// <returns></returns>
+        int DeleteOfficeAssignment(int personID);
+
+        #endregion
     }
 }

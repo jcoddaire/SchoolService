@@ -101,6 +101,31 @@ namespace StudentService.Tests.Unit.Helpers
         public int DeleteCourse(int courseID)
         {
             throw new NotImplementedException();
+        }      
+
+        OfficeAssignmentDTO IStudentService.GetOfficeAssignment(int personID)
+        {
+            throw new NotImplementedException();
+        }
+
+        OfficeAssignmentDTO IStudentService.GetAllOfficeAssignments()
+        {
+            throw new NotImplementedException();
+        }
+
+        OfficeAssignmentDTO IStudentService.CreateOfficeAssignment(OfficeAssignmentDTO assignment)
+        {
+            throw new NotImplementedException();
+        }
+
+        OfficeAssignmentDTO IStudentService.UpdateOfficeAssignment(OfficeAssignmentDTO assignment)
+        {
+            throw new NotImplementedException();
+        }
+
+        int IStudentService.DeleteOfficeAssignment(int personID)
+        {
+            throw new NotImplementedException();
         }
     }
 }

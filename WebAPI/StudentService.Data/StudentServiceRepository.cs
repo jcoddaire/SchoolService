@@ -139,7 +139,7 @@ namespace StudentService.Data
         }
 
         /// <summary>
-        /// Deletes the person.
+        /// Deletes the person. If the person has Student Grades, this also removes the grades.
         /// </summary>
         /// <param name="personID">The person identifier.</param>
         /// <returns>
@@ -152,7 +152,8 @@ namespace StudentService.Data
             
             if(target != null && target.PersonID == personID)
             {
-                Database.People.Remove(target);
+                Database.StudentGrades.RemoveRange(Database.StudentGrades.Where(x => x.StudentID == personID).ToList());
+                Database.People.Remove(target);                
                 return Database.SaveChanges();
             }
             return -1;
@@ -393,7 +394,7 @@ namespace StudentService.Data
             throw new NotImplementedException();
         }
 
-        public OfficeAssignmentDTO GetAllOfficeAssignments()
+        public IEnumerable<OfficeAssignmentDTO> GetAllOfficeAssignments()
         {
             throw new NotImplementedException();
         }
@@ -449,12 +450,141 @@ namespace StudentService.Data
         /// <returns></returns>
         public int DeleteOfficeAssignment(int personID)
         {
-
             var target = Database.OfficeAssignments.Where(x => x.InstructorID == personID).FirstOrDefault();
 
             if (target != null && target.InstructorID == personID)
             {
                 Database.OfficeAssignments.Remove(target);
+                return Database.SaveChanges();
+            }
+            return -1;
+        }
+        #endregion
+
+        #region Student Grade
+        /// <summary>
+        /// Gets the student grade.
+        /// </summary>
+        /// <param name="enrollmentID">The enrollment identifier.</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentOutOfRangeException">enrollmentID - Must be greater than 0!</exception>
+        /// <exception cref="KeyNotFoundException"></exception>
+        public StudentGradeDTO GetStudentGrade(int enrollmentID)
+        {
+            if (enrollmentID <= 0)
+            {
+                throw new ArgumentOutOfRangeException("enrollmentID", "Must be greater than 0!");
+            }
+            if (!Database.StudentGrades.Any(x => x.EnrollmentID == enrollmentID))
+            {
+                throw new KeyNotFoundException($"The enrollmentID '{enrollmentID}' was not found in the system.");
+            }
+
+            var result = Database.StudentGrades.Where(x => x.EnrollmentID == enrollmentID).FirstOrDefault();
+            if(result != null)
+            {
+                var newResult = new StudentGradeDTO
+                {
+                    EnrollmentID = result.EnrollmentID,
+                    CourseID = result.CourseID,
+                    StudentID = result.StudentID,
+                    Grade = result.Grade
+                };
+
+                return newResult;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Gets all student grades.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<StudentGradeDTO> GetAllStudentGrades()
+        {
+            var results = Database.StudentGrades.Select(
+                x => new StudentGradeDTO()
+                {
+                    EnrollmentID = x.EnrollmentID,
+                    CourseID = x.CourseID,
+                    StudentID = x.StudentID,
+                    Grade = x.Grade
+
+                }).ToList();
+
+            return results;
+        }
+
+        /// <summary>
+        /// Adds the student grade.
+        /// </summary>
+        /// <param name="grade">The grade.</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">grade - grade cannot be null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// grade.CourseID - Must be greater than 0!
+        /// or
+        /// grade.StudentID - Must be greater than 0!
+        /// </exception>
+        /// <exception cref="KeyNotFoundException">
+        /// </exception>
+        public StudentGradeDTO AddStudentGrade(StudentGradeDTO grade)
+        {
+            if(grade == null)
+            {
+                throw new ArgumentNullException("grade", "grade cannot be null.");
+            }
+
+            if (grade.CourseID <= 0)
+            {
+                throw new ArgumentOutOfRangeException("grade.CourseID", "Must be greater than 0!");
+            }
+            if (!Database.Courses.Any(x => x.CourseID == grade.CourseID))
+            {
+                throw new KeyNotFoundException($"The courseID '{grade.CourseID}' was not found in the system.");
+            }
+
+            if (grade.StudentID <= 0)
+            {
+                throw new ArgumentOutOfRangeException("grade.StudentID", "Must be greater than 0!");
+            }
+            if (!Database.People.Any(x => x.PersonID == grade.StudentID))
+            {
+                throw new KeyNotFoundException($"The studentID '{grade.StudentID}' was not found in the system.");
+            }
+            
+            var newTarget = new StudentGrade
+            {
+                CourseID = grade.CourseID,
+                StudentID = grade.StudentID,
+                Grade = grade.Grade
+            };
+
+            Database.StudentGrades.Add(newTarget);
+            Database.SaveChanges();
+                        
+            grade.EnrollmentID = newTarget.EnrollmentID;
+
+            return grade;
+        }
+
+        public StudentGradeDTO UpdateStudentGrade(StudentGradeDTO grade)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Deletes the student grade.
+        /// </summary>
+        /// <param name="enrollmentID">The enrollment identifier.</param>
+        /// <returns></returns>
+        public int DeleteStudentGrade(int enrollmentID)
+        {
+            var target = Database.StudentGrades.Where(x => x.EnrollmentID == enrollmentID).FirstOrDefault();
+
+            if (target != null && target.EnrollmentID == enrollmentID)
+            {
+                Database.StudentGrades.Remove(target);
                 return Database.SaveChanges();
             }
             return -1;

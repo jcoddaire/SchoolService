@@ -139,7 +139,7 @@ namespace StudentService.Data
         /// Gets all office assignments.
         /// </summary>
         /// <returns></returns>
-        OfficeAssignmentDTO GetAllOfficeAssignments();
+        IEnumerable<OfficeAssignmentDTO> GetAllOfficeAssignments();
 
         /// <summary>
         /// Creates the office assignment.
@@ -161,6 +161,44 @@ namespace StudentService.Data
         /// <param name="personID">The person identifier.</param>
         /// <returns></returns>
         int DeleteOfficeAssignment(int personID);
+
+        #endregion
+
+        #region Student Grades
+
+        /// <summary>
+        /// Gets the student grade.
+        /// </summary>
+        /// <param name="enrollmentID">The enrollment identifier.</param>
+        /// <returns></returns>
+        StudentGradeDTO GetStudentGrade(int enrollmentID);
+
+        /// <summary>
+        /// Gets all student grades.
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<StudentGradeDTO> GetAllStudentGrades();
+
+        /// <summary>
+        /// Adds the student grade.
+        /// </summary>
+        /// <param name="grade">The grade.</param>
+        /// <returns></returns>
+        StudentGradeDTO AddStudentGrade(StudentGradeDTO grade);
+
+        /// <summary>
+        /// Updates the student grade.
+        /// </summary>
+        /// <param name="grade">The grade.</param>
+        /// <returns></returns>
+        StudentGradeDTO UpdateStudentGrade(StudentGradeDTO grade);
+
+        /// <summary>
+        /// Deletes the student grade.
+        /// </summary>
+        /// <param name="enrollmentID">The enrollment identifier.</param>
+        /// <returns></returns>
+        int DeleteStudentGrade(int enrollmentID);
 
         #endregion
     }

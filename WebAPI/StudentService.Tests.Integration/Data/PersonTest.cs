@@ -198,7 +198,7 @@ namespace StudentService.Tests.Integration.Data
         }
 
         [TestMethod]
-        public void DeletePerson_Test_PersonIsAssignedToCourse()
+        public void DeletePerson_Test_PersonIsAssignedToOffice()
         {
             //create a person.
             var currentPeopleCount = Repository.GetAllPersons().Count();
@@ -221,6 +221,55 @@ namespace StudentService.Tests.Integration.Data
             PersonTest.DeleteTestObject(obj, Repository);
 
             Assert.AreEqual(currentPeopleCount, Repository.GetAllPersons().Count());
+        }
+
+        [TestMethod]
+        public void DeletePerson_Test_StudentHasGrades()
+        {
+            //create a person.
+            var currentPeopleCount = Repository.GetAllPersons().Count();
+
+            var obj = new PersonDTO();
+            obj.FirstName = "Test";
+            obj.LastName = "Subject";
+            obj.EnrollmentDate = DateTime.Now;
+
+            obj = Repository.CreatePerson(obj);
+
+            Assert.IsTrue(Repository.GetAllPersons().Count() > currentPeopleCount);
+
+            //create a course.
+            var course = CourseTest.CreateTestCourse(Repository);
+
+            //create a grade.
+            var grade = new StudentGradeDTO
+            {
+                CourseID = course.CourseID,
+                StudentID = obj.PersonID,
+                Grade = (decimal)3.5
+            };
+
+            grade = Repository.AddStudentGrade(grade);
+
+            Assert.IsTrue(grade.EnrollmentID > 0);
+
+            //Attempt to delete the person.
+            try
+            {
+                PersonTest.DeleteTestObject(obj, Repository);
+                Assert.AreEqual(currentPeopleCount, Repository.GetAllPersons().Count());
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                //clean up test data.
+                Repository.DeleteStudentGrade(grade.EnrollmentID);
+                CourseTest.DeleteTestObject(course, Repository);
+                PersonTest.DeleteTestObject(obj, Repository);
+            }            
         }
 
         /// <summary>

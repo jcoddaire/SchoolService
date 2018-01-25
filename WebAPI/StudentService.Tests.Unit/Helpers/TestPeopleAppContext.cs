@@ -108,7 +108,7 @@ namespace StudentService.Tests.Unit.Helpers
             throw new NotImplementedException();
         }
 
-        OfficeAssignmentDTO IStudentService.GetAllOfficeAssignments()
+        public IEnumerable<OfficeAssignmentDTO> GetAllOfficeAssignments()
         {
             throw new NotImplementedException();
         }
@@ -124,6 +124,31 @@ namespace StudentService.Tests.Unit.Helpers
         }
 
         int IStudentService.DeleteOfficeAssignment(int personID)
+        {
+            throw new NotImplementedException();
+        }
+        
+        public StudentGradeDTO GetStudentGrade(int enrollmentID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<StudentGradeDTO> GetAllStudentGrades()
+        {
+            throw new NotImplementedException();
+        }
+
+        public StudentGradeDTO AddStudentGrade(StudentGradeDTO grade)
+        {
+            throw new NotImplementedException();
+        }
+
+        public StudentGradeDTO UpdateStudentGrade(StudentGradeDTO grade)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int DeleteStudentGrade(int enrollmentID)
         {
             throw new NotImplementedException();
         }

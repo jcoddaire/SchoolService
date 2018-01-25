@@ -212,7 +212,6 @@ namespace StudentService.Tests.Integration.Data
             Assert.IsTrue(Repository.GetAllPersons().Count() > currentPeopleCount);
 
             //create an Office Assignment.
-
             var officeAssignment = new OfficeAssignmentDTO { InstructorID = obj.PersonID, Location = "321 Test Location" };
             officeAssignment = Repository.CreateOfficeAssignment(officeAssignment);
 

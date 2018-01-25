@@ -131,9 +131,9 @@ namespace StudentService.Data
         /// <summary>
         /// Gets the office assignment.
         /// </summary>
-        /// <param name="personID">The person identifier.</param>
+        /// <param name="instructorID">The person identifier.</param>
         /// <returns></returns>
-        OfficeAssignmentDTO GetOfficeAssignment(int personID);
+        OfficeAssignmentDTO GetOfficeAssignment(int instructorID);
 
         /// <summary>
         /// Gets all office assignments.
@@ -143,6 +143,8 @@ namespace StudentService.Data
 
         /// <summary>
         /// Creates the office assignment.
+        /// If the InstructorID is already assigned to another office, this method
+        /// will delete the instructor's prior assignment, then assign the new location.
         /// </summary>
         /// <param name="assignment">The assignment.</param>
         /// <returns></returns>

@@ -389,14 +389,52 @@ namespace StudentService.Data
         #endregion
 
         #region Office Assignments
-        public OfficeAssignmentDTO GetOfficeAssignment(int personID)
+        
+        /// <summary>
+        /// Gets the office assignment.
+        /// </summary>
+        /// <param name="instructorID">The person identifier.</param>
+        /// <returns></returns>
+        public OfficeAssignmentDTO GetOfficeAssignment(int instructorID)
         {
-            throw new NotImplementedException();
+            if (instructorID <= 0)
+            {
+                return null;
+            }
+
+            var target = Database.OfficeAssignments.Where(c => c.InstructorID == instructorID).Select(
+                x => new OfficeAssignmentDTO()
+                {
+                    InstructorID = x.InstructorID,
+                    Location = x.Location,
+                    Timestamp = x.Timestamp
+
+                }).FirstOrDefault();
+
+            if (target != null && target.InstructorID > 0)
+            {
+                return target;
+            }
+
+            return null;
         }
 
+        /// <summary>
+        /// Gets all office assignments.
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<OfficeAssignmentDTO> GetAllOfficeAssignments()
         {
-            throw new NotImplementedException();
+            var results = Database.OfficeAssignments.Select(
+               x => new OfficeAssignmentDTO()
+               {
+                   InstructorID = x.InstructorID,
+                   Location = x.Location,
+                   Timestamp = x.Timestamp
+
+               }).ToList();
+
+            return results;
         }
 
         /// <summary>
@@ -438,9 +476,26 @@ namespace StudentService.Data
             return assignment;
         }
 
+        /// <summary>
+        /// Updates the office assignment.
+        /// </summary>
+        /// <param name="assignment">The assignment.</param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
         public OfficeAssignmentDTO UpdateOfficeAssignment(OfficeAssignmentDTO assignment)
         {
-            throw new NotImplementedException();
+            var changedTarget = Database.OfficeAssignments.Where(p => p.InstructorID == assignment.InstructorID).FirstOrDefault();
+            if (changedTarget == null || changedTarget.InstructorID != assignment.InstructorID)
+            {
+                throw new KeyNotFoundException("Could not find a matching item in the dataset.");
+            }
+                        
+            if(DeleteOfficeAssignment(assignment.InstructorID) > 0)
+            {
+                assignment = CreateOfficeAssignment(assignment);
+            }            
+
+            return assignment;
         }
 
         /// <summary>

@@ -63,7 +63,7 @@ namespace StudentService.Tests.Integration.Data
         public void AddOfficeAssignment_Test_Invalid_NotFound()
         {
             //Find an ID that is not in the dataset.
-            var notUsedID = GetUnusedPersonID(Repository);
+            var notUsedID = PersonTest.GetUnusedPersonID(Repository);
             var obj = new OfficeAssignmentDTO { InstructorID = notUsedID };
 
             try
@@ -101,40 +101,10 @@ namespace StudentService.Tests.Integration.Data
         public void GetOfficeAssignment_Invalid_InstructorID_NotExists()
         {
             //Find an ID that is not in the dataset.
-            var notUsedID = GetUnusedPersonID(Repository);
+            var notUsedID = PersonTest.GetUnusedPersonID(Repository);
             
             var result = Repository.GetOfficeAssignment(notUsedID);
             Assert.IsNull(result);
-        }
-
-        /// <summary>
-        /// Finds a Person ID that is not in the system.
-        /// </summary>
-        /// <param name="_repository">The repository.</param>
-        /// <returns></returns>
-        private int GetUnusedPersonID(IStudentService _repository)
-        {
-            var assignments = _repository.GetAllPersons();
-
-            for (int ii = 1; ii < Int32.MaxValue; ii++)
-            {
-                bool isUsed = false;
-
-                foreach (var assignment in assignments)
-                {
-                    if (assignment.PersonID.Equals(ii))
-                    {
-                        isUsed = true;
-                        break;
-                    }
-                }
-
-                if (!isUsed)
-                {
-                    return ii;
-                }
-            }
-            return 0;
         }
 
         [TestMethod]
@@ -153,7 +123,7 @@ namespace StudentService.Tests.Integration.Data
         public void UpdateOfficeAssignment_Test_Invalid_InstructorID()
         {
             //Find an ID that is not in the dataset.
-            var notUsedID = GetUnusedPersonID(Repository);
+            var notUsedID = PersonTest.GetUnusedPersonID(Repository);
             var obj = new OfficeAssignmentDTO { InstructorID = notUsedID };
             
             try

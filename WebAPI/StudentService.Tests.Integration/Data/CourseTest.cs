@@ -89,7 +89,7 @@ namespace StudentService.Tests.Integration.Data
                 CourseTest.DeleteTestObject(obj, Repository);
             }
         }
-
+        
         [TestMethod]
         public void UpdateCourse_Test_Credits()
         {
@@ -195,6 +195,31 @@ namespace StudentService.Tests.Integration.Data
             {
                 DepartmentTest.DeleteTestObject(originalDepartment, _repository);
             }
+        }
+
+        public static int GetUnusedCourse(IStudentService repository)
+        {
+            var courses = repository.GetAllCourses();
+
+            for (int ii = 1; ii < Int32.MaxValue; ii++)
+            {
+                bool isUsed = false;
+
+                foreach (var thing in courses)
+                {
+                    if (thing.CourseID.Equals(ii))
+                    {
+                        isUsed = true;
+                        break;
+                    }
+                }
+
+                if (!isUsed)
+                {
+                    return ii;
+                }
+            }
+            return 0;
         }
     }
 }

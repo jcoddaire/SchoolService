@@ -528,11 +528,11 @@ namespace StudentService.Data
         {
             if (enrollmentID <= 0)
             {
-                throw new ArgumentOutOfRangeException("enrollmentID", "Must be greater than 0!");
+                return null;
             }
             if (!Database.StudentGrades.Any(x => x.EnrollmentID == enrollmentID))
             {
-                throw new KeyNotFoundException($"The enrollmentID '{enrollmentID}' was not found in the system.");
+                return null;
             }
 
             var result = Database.StudentGrades.Where(x => x.EnrollmentID == enrollmentID).FirstOrDefault();
@@ -548,7 +548,7 @@ namespace StudentService.Data
 
                 return newResult;
             }
-            return null;
+            return null; //this should never happen.
         }
 
         /// <summary>
@@ -625,7 +625,59 @@ namespace StudentService.Data
 
         public StudentGradeDTO UpdateStudentGrade(StudentGradeDTO grade)
         {
-            throw new NotImplementedException();
+            if (grade == null)
+            {
+                throw new ArgumentNullException("grade", "grade cannot be null.");
+            }
+
+            if (grade.EnrollmentID <= 0)
+            {
+                throw new ArgumentOutOfRangeException("grade.EnrollmentID", "Must be greater than 0!");
+            }
+            if (!Database.StudentGrades.Any(x => x.EnrollmentID == grade.EnrollmentID))
+            {
+                throw new KeyNotFoundException($"The enrollmentID '{grade.EnrollmentID}' was not found in the system.");
+            }
+
+            if (grade.CourseID <= 0)
+            {
+                throw new ArgumentOutOfRangeException("grade.CourseID", "Must be greater than 0!");
+            }
+            if (!Database.Courses.Any(x => x.CourseID == grade.CourseID))
+            {
+                throw new KeyNotFoundException($"The courseID '{grade.CourseID}' was not found in the system.");
+            }
+
+            if (grade.StudentID <= 0)
+            {
+                throw new ArgumentOutOfRangeException("grade.StudentID", "Must be greater than 0!");
+            }
+            if (!Database.People.Any(x => x.PersonID == grade.StudentID))
+            {
+                throw new KeyNotFoundException($"The studentID '{grade.StudentID}' was not found in the system.");
+            }
+
+            var changed = Database.StudentGrades.Where(p => p.EnrollmentID == grade.EnrollmentID).FirstOrDefault();
+            if (changed == null || changed.EnrollmentID != grade.EnrollmentID)
+            {
+                //this should never happen.
+                throw new KeyNotFoundException("Could not find a matching item in the dataset.");
+            }
+
+            changed.StudentID = grade.StudentID;
+            changed.CourseID = grade.CourseID;
+            changed.Grade = grade.Grade;
+
+            Database.StudentGrades.Attach(changed);
+
+            var entry = Database.Entry(changed);
+            entry.Property(e => e.StudentID).IsModified = true;
+            entry.Property(e => e.CourseID).IsModified = true;
+            entry.Property(e => e.Grade).IsModified = true;            
+
+            Database.SaveChanges();
+
+            return grade;
         }
 
         /// <summary>

@@ -23,7 +23,8 @@ This is a simple demo project. It includes things I'm learning, practicing, or i
 
 - Add authorization.
 - Add global error handling.
-- Add logging. I'll have to investigate what free options exist.
+- Add logging.
+- Add Swagger, apparently it's the new black.
 
 ### Entity Framework
 

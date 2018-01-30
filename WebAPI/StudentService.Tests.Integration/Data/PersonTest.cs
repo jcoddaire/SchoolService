@@ -302,5 +302,35 @@ namespace StudentService.Tests.Integration.Data
         {
             Repository.DeletePerson(toDelete.PersonID);            
         }
+
+        /// <summary>
+        /// Finds a Person ID that is not in the system.
+        /// </summary>
+        /// <param name="_repository">The repository.</param>
+        /// <returns></returns>
+        public static int GetUnusedPersonID(IStudentService _repository)
+        {
+            var assignments = _repository.GetAllPersons();
+
+            for (int ii = 1; ii < Int32.MaxValue; ii++)
+            {
+                bool isUsed = false;
+
+                foreach (var assignment in assignments)
+                {
+                    if (assignment.PersonID.Equals(ii))
+                    {
+                        isUsed = true;
+                        break;
+                    }
+                }
+
+                if (!isUsed)
+                {
+                    return ii;
+                }
+            }
+            return 0;
+        }
     }
 }

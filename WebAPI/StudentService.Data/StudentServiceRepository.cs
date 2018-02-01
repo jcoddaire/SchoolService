@@ -623,6 +623,22 @@ namespace StudentService.Data
             return grade;
         }
 
+        /// <summary>
+        /// Updates the student grade.
+        /// </summary>
+        /// <param name="grade">The grade.</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">grade - grade cannot be null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// grade.EnrollmentID - Must be greater than 0!
+        /// or
+        /// grade.CourseID - Must be greater than 0!
+        /// or
+        /// grade.StudentID - Must be greater than 0!
+        /// </exception>
+        /// <exception cref="KeyNotFoundException">
+        /// Could not find a matching item in the dataset.
+        /// </exception>
         public StudentGradeDTO UpdateStudentGrade(StudentGradeDTO grade)
         {
             if (grade == null)

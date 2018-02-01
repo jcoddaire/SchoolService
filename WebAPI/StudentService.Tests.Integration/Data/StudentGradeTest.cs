@@ -62,7 +62,7 @@ namespace StudentService.Tests.Integration.Data
             }
             finally
             {
-                obj.StudentID = idToDelete;
+                obj.CourseID = idToDelete;
                 DeleteTestObject(obj, Repository);
             }
         }
@@ -208,6 +208,186 @@ namespace StudentService.Tests.Integration.Data
             Assert.IsTrue(Repository.GetAllStudentGrades().Count() < currentCount);
         }
 
+        #region UpdateStudentGrade tests
+        [TestMethod]
+        public void UpdateStudentGrade_Test()
+        {
+            var obj = CreateTestStudentGrade(Repository);
+
+            try
+            {
+                Assert.IsTrue(Repository.GetAllStudentGrades().Any(x => x.EnrollmentID == obj.EnrollmentID));
+
+                obj.Grade = (decimal)2.0;
+
+                Repository.UpdateStudentGrade(obj);
+
+                Assert.AreEqual((decimal)2.0, Repository.GetStudentGrade(obj.EnrollmentID).Grade);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                StudentGradeTest.DeleteTestObject(obj, Repository);
+            }
+        }
+
+        [TestMethod]
+        public void UpdateStudentGrade_Test_Invalid_Null()
+        {
+            try
+            {
+                var obj = Repository.UpdateStudentGrade(null);
+            }
+            catch (ArgumentNullException ex)
+            {
+                Assert.IsTrue(ex.Message.Contains("grade"));
+            }
+        }
+
+        [TestMethod]
+        public void UpdateStudentGrade_Test_Invalid_CourseID_LessThanZero()
+        {
+            var obj = CreateTestStudentGrade(Repository);
+            var idToDelete = obj.CourseID;
+
+            obj.CourseID = 0;
+
+            try
+            {
+                obj = Repository.UpdateStudentGrade(obj);
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                Assert.IsTrue(ex.Message.Contains("grade.CourseID"));
+            }
+            finally
+            {
+                obj.CourseID = idToDelete;
+                DeleteTestObject(obj, Repository);
+            }
+        }
+
+        [TestMethod]
+        public void UpdateStudentGrade_Test_Invalid_StudentID_LessThanZero()
+        {
+            var obj = CreateTestStudentGrade(Repository);
+            var studentIDToDelete = obj.StudentID;
+
+            obj.StudentID = 0;
+
+            try
+            {
+                obj = Repository.UpdateStudentGrade(obj);
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                Assert.IsTrue(ex.Message.Contains("grade.StudentID"));
+            }
+            finally
+            {
+                obj.StudentID = studentIDToDelete;
+                DeleteTestObject(obj, Repository);
+            }
+        }
+
+        [TestMethod]
+        public void UpdateStudentGrade_Test_Invalid_CourseID_NotFound()
+        {
+            //Find an ID that is not in the dataset.
+            var notUsedID = CourseTest.GetUnusedCourse(Repository);
+
+            var obj = CreateTestStudentGrade(Repository);
+            var courseIDtoDelete = obj.CourseID;
+
+            obj.CourseID = notUsedID;
+
+            try
+            {
+                obj = Repository.UpdateStudentGrade(obj);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                Assert.IsTrue(ex.Message.Contains("The courseID '"));
+            }
+            finally
+            {
+                obj.CourseID = courseIDtoDelete;
+                DeleteTestObject(obj, Repository);
+            }
+        }
+
+        [TestMethod]
+        public void UpdateStudentGrade_Test_Invalid_StudentID_NotFound()
+        {
+            //Find an ID that is not in the dataset.
+            var notUsedID = PersonTest.GetUnusedPersonID(Repository);
+
+            var obj = CreateTestStudentGrade(Repository);
+            var idToDelete = obj.StudentID;
+
+            obj.StudentID = notUsedID;
+
+            try
+            {
+                obj = Repository.UpdateStudentGrade(obj);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                Assert.IsTrue(ex.Message.Contains("The studentID '"));
+            }
+            finally
+            {
+                obj.StudentID = idToDelete;
+                DeleteTestObject(obj, Repository);
+            }
+        }
+
+        [TestMethod]
+        public void UpdateStudentGrade_Test_Invalid_EnrollmentID_Null()
+        {
+            var obj = new StudentGradeDTO();
+
+            try
+            {
+                obj = Repository.UpdateStudentGrade(obj);
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                Assert.IsTrue(ex.Message.Contains("grade.EnrollmentID"));
+            }
+        }
+
+        [TestMethod]
+        public void UpdateStudentGrade_Test_Invalid_EnrollmentID_NotFound()
+        {
+            //Find an ID that is not in the dataset.
+            var notUsedID = GetUnusedEnrollmentID(Repository);
+
+            var obj = CreateTestStudentGrade(Repository);
+            var idToDelete = obj.EnrollmentID;
+
+            obj.EnrollmentID = notUsedID;
+
+            try
+            {
+                obj = Repository.UpdateStudentGrade(obj);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                Assert.IsTrue(ex.Message.Contains("The enrollmentID '"));
+            }
+            finally
+            {
+                obj.EnrollmentID = idToDelete;
+                DeleteTestObject(obj, Repository);
+            }
+        }
+
+        #endregion
+
         /// <summary>
         /// Creates the test student grade.
         /// This will automatically create a student and assign it to the result object.
@@ -238,6 +418,7 @@ namespace StudentService.Tests.Integration.Data
         {
             _repository.DeleteStudentGrade(toDelete.EnrollmentID);
             _repository.DeleteCourse(toDelete.CourseID);
+            _repository.DeleteDepartment(toDelete.Course.DepartmentID);
             _repository.DeletePerson(toDelete.StudentID);
         }
 

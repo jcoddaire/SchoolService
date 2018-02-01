@@ -1,9 +1,9 @@
+USE [master];
+GO
+
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
-GO
-
-USE [master];
 GO
 
 IF EXISTS (SELECT * FROM sys.databases WHERE name = 'School')

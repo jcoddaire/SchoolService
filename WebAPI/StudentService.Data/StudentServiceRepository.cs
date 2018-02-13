@@ -717,43 +717,177 @@ namespace StudentService.Data
 
         #region Online Courses
 
+        /// <summary>
+        /// Gets all online courses.
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<OnlineCourseDTO> GetAllOnlineCourses()
         {
-            throw new NotImplementedException();
+            var results = Database.OnlineCourses.Select(
+               x => new OnlineCourseDTO()
+               {                   
+                   CourseID = x.CourseID,
+                   URL = x.URL
+
+               }).ToList();
+
+            return results;
         }
 
+        /// <summary>
+        /// Gets the online course.
+        /// </summary>
+        /// <param name="courseID">The course identifier.</param>
+        /// <returns></returns>
         public OnlineCourseDTO GetOnlineCourse(int courseID)
         {
-            throw new NotImplementedException();
+            if (courseID <= 0)
+            {
+                return null;
+            }
+            if (!Database.OnlineCourses.Any(x => x.CourseID == courseID))
+            {
+                return null;
+            }
+
+            var result = Database.OnlineCourses.Where(x => x.CourseID == courseID).FirstOrDefault();
+            if (result != null)
+            {
+                var newResult = new OnlineCourseDTO
+                {
+                    CourseID = result.CourseID,
+                    URL = result.URL
+                };
+
+                return newResult;
+            }
+            return null; //this should never happen.
         }
 
+        /// <summary>
+        /// Adds the online course.
+        /// </summary>
+        /// <param name="course">The course.</param>
+        /// <returns></returns>
         public OnlineCourseDTO AddOnlineCourse(OnlineCourseDTO course)
         {
-            throw new NotImplementedException();
+            if(course == null)
+            {
+                throw new ArgumentNullException("course");
+            }
+            if (Database.Courses.Any(x => x.CourseID == course.CourseID) == false)
+            {
+                throw new KeyNotFoundException($"The course ID {course.CourseID} was not found in the system.");
+            }
+            if (Database.OnlineCourses.Any(x => x.CourseID == course.CourseID))
+            {
+                DeleteOnlineCourse(course.CourseID);
+            }
+
+            var newItem = new OnlineCourse
+            {
+                CourseID = course.CourseID,
+                URL = course.URL
+            };
+
+            Database.OnlineCourses.Add(newItem);
+            Database.SaveChanges();
+
+            return course;
         }
 
+        /// <summary>
+        /// Updates the online course.
+        /// </summary>
+        /// <param name="course">The course.</param>
+        /// <returns></returns>
+        /// <exception cref="KeyNotFoundException"></exception>
         public OnlineCourseDTO UpdateOnlineCourse(OnlineCourseDTO course)
         {
-            throw new NotImplementedException();
+            if (Database.Courses.Any(x => x.CourseID == course.CourseID) == false)
+            {
+                throw new KeyNotFoundException($"The course ID {course.CourseID} was not found in the system.");
+            }
+            if (Database.OnlineCourses.Any(x => x.CourseID == course.CourseID))
+            {
+                DeleteOnlineCourse(course.CourseID);
+            }
+            
+            AddOnlineCourse(course);
+
+            return course;
         }
 
+        /// <summary>
+        /// Deletes the online course.
+        /// </summary>
+        /// <param name="courseID">The course identifier.</param>
+        /// <returns></returns>
         public int DeleteOnlineCourse(int courseID)
         {
-            throw new NotImplementedException();
+            var target = Database.OnlineCourses.Where(x => x.CourseID == courseID).FirstOrDefault();
+
+            if (target != null && target.CourseID == courseID)
+            {
+                Database.OnlineCourses.Remove(target);
+                return Database.SaveChanges();
+            }
+            return -1;
         }
 
         #endregion
 
         #region Onsite Courses
 
+        /// <summary>
+        /// Gets all onsite courses.
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<OnsiteCourseDTO> GetAllOnsiteCourses()
         {
-            throw new NotImplementedException();
+            var results = Database.OnsiteCourses.Select(
+              x => new OnsiteCourseDTO()
+              {
+                  CourseID = x.CourseID,
+                  Location = x.Location,
+                  Days = x.Days,
+                  Time = x.Time
+
+              }).ToList();
+
+            return results;
         }
 
+        /// <summary>
+        /// Gets the onsite course.
+        /// </summary>
+        /// <param name="courseID">The course identifier.</param>
+        /// <returns></returns>
         public OnsiteCourseDTO GetOnsiteCourse(int courseID)
         {
-            throw new NotImplementedException();
+            if (courseID <= 0)
+            {
+                return null;
+            }
+            if (!Database.OnsiteCourses.Any(x => x.CourseID == courseID))
+            {
+                return null;
+            }
+
+            var result = Database.OnsiteCourses.Where(x => x.CourseID == courseID).FirstOrDefault();
+            if (result != null)
+            {
+                var newResult = new OnsiteCourseDTO
+                {
+                    CourseID = result.CourseID,
+                    Location = result.Location,
+                    Days = result.Days,
+                    Time = result.Time
+                };
+
+                return newResult;
+            }
+            return null; //this should never happen.
         }
 
         public OnsiteCourseDTO AddOnsiteCourse(OnsiteCourseDTO course)

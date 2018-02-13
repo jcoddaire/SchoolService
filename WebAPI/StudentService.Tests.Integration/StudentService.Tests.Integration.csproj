@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\PersonTest.cs" />
+    <Compile Include="Data\OnlineCourseTest.cs" />
     <Compile Include="Data\StudentGradeTest.cs" />
     <Compile Include="Data\OfficeAssignmentTest.cs" />
     <Compile Include="Data\CourseTest.cs" />

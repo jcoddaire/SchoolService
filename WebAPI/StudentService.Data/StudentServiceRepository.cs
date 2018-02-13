@@ -804,6 +804,10 @@ namespace StudentService.Data
         /// <exception cref="KeyNotFoundException"></exception>
         public OnlineCourseDTO UpdateOnlineCourse(OnlineCourseDTO course)
         {
+            if(course == null)
+            {
+                throw new ArgumentNullException("course");
+            }
             if (Database.Courses.Any(x => x.CourseID == course.CourseID) == false)
             {
                 throw new KeyNotFoundException($"The course ID {course.CourseID} was not found in the system.");
@@ -890,19 +894,83 @@ namespace StudentService.Data
             return null; //this should never happen.
         }
 
+        /// <summary>
+        /// Adds the onsite course.
+        /// </summary>
+        /// <param name="course">The course.</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">course</exception>
+        /// <exception cref="KeyNotFoundException"></exception>
         public OnsiteCourseDTO AddOnsiteCourse(OnsiteCourseDTO course)
         {
-            throw new NotImplementedException();
+            if (course == null)
+            {
+                throw new ArgumentNullException("course");
+            }
+            if (Database.Courses.Any(x => x.CourseID == course.CourseID) == false)
+            {
+                throw new KeyNotFoundException($"The course ID {course.CourseID} was not found in the system.");
+            }
+            if (Database.OnsiteCourses.Any(x => x.CourseID == course.CourseID))
+            {
+                DeleteOnsiteCourse(course.CourseID);
+            }
+
+            var newItem = new OnsiteCourse
+            {
+                CourseID = course.CourseID,
+                Location = course.Location,
+                Days = course.Days,
+                Time = course.Time
+            };
+
+            Database.OnsiteCourses.Add(newItem);
+            Database.SaveChanges();
+
+            return course;
         }
 
+        /// <summary>
+        /// Updates the onsite course.
+        /// </summary>
+        /// <param name="course">The course.</param>
+        /// <returns></returns>
+        /// <exception cref="KeyNotFoundException"></exception>
         public OnsiteCourseDTO UpdateOnsiteCourse(OnsiteCourseDTO course)
         {
-            throw new NotImplementedException();
+            if(course == null)
+            {
+                throw new ArgumentNullException("course");
+            }
+            if (Database.Courses.Any(x => x.CourseID == course.CourseID) == false)
+            {
+                throw new KeyNotFoundException($"The course ID {course.CourseID} was not found in the system.");
+            }
+            if (Database.OnsiteCourses.Any(x => x.CourseID == course.CourseID))
+            {
+                DeleteOnsiteCourse(course.CourseID);
+            }
+
+            AddOnsiteCourse(course);
+
+            return course;
         }
 
+        /// <summary>
+        /// Deletes the onsite course.
+        /// </summary>
+        /// <param name="courseID">The course identifier.</param>
+        /// <returns></returns>
         public int DeleteOnsiteCourse(int courseID)
         {
-            throw new NotImplementedException();
+            var target = Database.OnsiteCourses.Where(x => x.CourseID == courseID).FirstOrDefault();
+
+            if (target != null && target.CourseID == courseID)
+            {
+                Database.OnsiteCourses.Remove(target);
+                return Database.SaveChanges();
+            }
+            return -1;
         }
 
         #endregion

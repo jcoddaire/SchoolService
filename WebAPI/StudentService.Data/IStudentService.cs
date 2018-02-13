@@ -9,7 +9,204 @@ namespace StudentService.Data
 {
     public interface IStudentService
     {
-        #region People Methods
+        #region Course Methods
+
+        /// <summary>
+        /// Gets all courses.
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<CourseDTO> GetAllCourses();
+
+        /// <summary>
+        /// Gets the course.
+        /// </summary>
+        /// <param name="courseID">The course identifier.</param>
+        /// <returns></returns>
+        CourseDTO GetCourse(int courseID);
+
+        /// <summary>
+        /// Creates the course.
+        /// </summary>
+        /// <param name="course">The course.</param>
+        /// <returns></returns>
+        CourseDTO CreateCourse(CourseDTO course);
+
+        /// <summary>
+        /// Updates the course.
+        /// </summary>
+        /// <param name="course">The course.</param>
+        /// <returns></returns>
+        CourseDTO UpdateCourse(CourseDTO course);
+
+        /// <summary>
+        /// Deletes the course.
+        /// </summary>
+        /// <param name="courseID">The course identifier.</param>
+        /// <returns></returns>
+        int DeleteCourse(int courseID);
+
+        #endregion
+
+        #region Course Instructor Methods
+        
+
+        #endregion
+        
+        #region Department Methods
+
+        /// <summary>
+        /// Gets all departments.
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<DepartmentDTO> GetAllDepartments();
+
+        /// <summary>
+        /// Gets the department.
+        /// </summary>
+        /// <param name="departmentID">The department identifier.</param>
+        /// <returns></returns>
+        DepartmentDTO GetDepartment(int departmentID);
+
+        /// <summary>
+        /// Creates the department.
+        /// </summary>
+        /// <param name="department">The department.</param>
+        /// <returns></returns>
+        DepartmentDTO CreateDepartment(DepartmentDTO department);
+
+        /// <summary>
+        /// Updates the department.
+        /// </summary>
+        /// <param name="department">The department.</param>
+        /// <returns></returns>
+        DepartmentDTO UpdateDepartment(DepartmentDTO department);
+
+        /// <summary>
+        /// Deletes the department.
+        /// </summary>
+        /// <param name="departmentID">The department identifier.</param>
+        /// <returns></returns>
+        int DeleteDepartment(int departmentID);
+
+        #endregion
+
+        #region Office Assignment Methods
+
+        /// <summary>
+        /// Gets all office assignments.
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<OfficeAssignmentDTO> GetAllOfficeAssignments();
+
+        /// <summary>
+        /// Gets the office assignment.
+        /// </summary>
+        /// <param name="instructorID">The person identifier.</param>
+        /// <returns></returns>
+        OfficeAssignmentDTO GetOfficeAssignment(int instructorID);
+
+        /// <summary>
+        /// Creates the office assignment.
+        /// If the InstructorID is already assigned to another office, this method
+        /// will delete the instructor's prior assignment, then assign the new location.
+        /// </summary>
+        /// <param name="assignment">The assignment.</param>
+        /// <returns></returns>
+        OfficeAssignmentDTO CreateOfficeAssignment(OfficeAssignmentDTO assignment);
+
+        /// <summary>
+        /// Updates the office assignment.
+        /// </summary>
+        /// <param name="assignment">The assignment.</param>
+        /// <returns></returns>
+        OfficeAssignmentDTO UpdateOfficeAssignment(OfficeAssignmentDTO assignment);
+
+        /// <summary>
+        /// Deletes the office assignment.
+        /// </summary>
+        /// <param name="personID">The person identifier.</param>
+        /// <returns></returns>
+        int DeleteOfficeAssignment(int personID);
+
+        #endregion
+
+        #region Online Course Methods
+        
+        /// <summary>
+        /// Gets all online courses.
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<OnlineCourseDTO> GetAllOnlineCourses();
+
+        /// <summary>
+        /// Gets the online course.
+        /// </summary>
+        /// <param name="courseID">The course identifier.</param>
+        /// <returns></returns>
+        OnlineCourseDTO GetOnlineCourse(int courseID);
+
+        /// <summary>
+        /// Adds the online course.
+        /// </summary>
+        /// <param name="course">The course.</param>
+        /// <returns></returns>
+        OnlineCourseDTO AddOnlineCourse(OnlineCourseDTO course);
+
+        /// <summary>
+        /// Updates the online course.
+        /// </summary>
+        /// <param name="course">The course.</param>
+        /// <returns></returns>
+        OnlineCourseDTO UpdateOnlineCourse(OnlineCourseDTO course);
+
+        /// <summary>
+        /// Deletes the online course.
+        /// </summary>
+        /// <param name="courseID">The course identifier.</param>
+        /// <returns></returns>
+        int DeleteOnlineCourse(int courseID);
+
+        #endregion
+
+        #region Onsite Course Methods
+        
+        /// <summary>
+        /// Gets all onsite courses.
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<OnsiteCourseDTO> GetAllOnsiteCourses();
+
+        /// <summary>
+        /// Gets the onsite course.
+        /// </summary>
+        /// <param name="courseID">The course identifier.</param>
+        /// <returns></returns>
+        OnsiteCourseDTO GetOnsiteCourse(int courseID);
+
+        /// <summary>
+        /// Adds the onsite course.
+        /// </summary>
+        /// <param name="course">The course.</param>
+        /// <returns></returns>
+        OnsiteCourseDTO AddOnsiteCourse(OnsiteCourseDTO course);
+
+        /// <summary>
+        /// Updates the onsite course.
+        /// </summary>
+        /// <param name="course">The course.</param>
+        /// <returns></returns>
+        OnsiteCourseDTO UpdateOnsiteCourse(OnsiteCourseDTO course);
+
+        /// <summary>
+        /// Deletes the onsite course.
+        /// </summary>
+        /// <param name="courseID">The course identifier.</param>
+        /// <returns></returns>
+        int DeleteOnsiteCourse(int courseID);
+
+        #endregion
+
+        #region Person Methods
         /// <summary>
         /// Gets all people.
         /// </summary>
@@ -50,123 +247,7 @@ namespace StudentService.Data
         int DeletePerson(int personID);
         #endregion
 
-        #region Department Methods
-        
-        /// <summary>
-        /// Gets all departments.
-        /// </summary>
-        /// <returns></returns>
-        IEnumerable<DepartmentDTO> GetAllDepartments();
-
-        /// <summary>
-        /// Gets the department.
-        /// </summary>
-        /// <param name="departmentID">The department identifier.</param>
-        /// <returns></returns>
-        DepartmentDTO GetDepartment(int departmentID);
-
-        /// <summary>
-        /// Creates the department.
-        /// </summary>
-        /// <param name="department">The department.</param>
-        /// <returns></returns>
-        DepartmentDTO CreateDepartment(DepartmentDTO department);
-
-        /// <summary>
-        /// Updates the department.
-        /// </summary>
-        /// <param name="department">The department.</param>
-        /// <returns></returns>
-        DepartmentDTO UpdateDepartment(DepartmentDTO department);
-
-        /// <summary>
-        /// Deletes the department.
-        /// </summary>
-        /// <param name="departmentID">The department identifier.</param>
-        /// <returns></returns>
-        int DeleteDepartment(int departmentID);
-
-        #endregion
-
-        #region Course Methods
-
-        /// <summary>
-        /// Gets all courses.
-        /// </summary>
-        /// <returns></returns>
-        IEnumerable<CourseDTO> GetAllCourses();
-
-        /// <summary>
-        /// Gets the course.
-        /// </summary>
-        /// <param name="courseID">The course identifier.</param>
-        /// <returns></returns>
-        CourseDTO GetCourse(int courseID);
-
-        /// <summary>
-        /// Creates the course.
-        /// </summary>
-        /// <param name="course">The course.</param>
-        /// <returns></returns>
-        CourseDTO CreateCourse(CourseDTO course);
-
-        /// <summary>
-        /// Updates the course.
-        /// </summary>
-        /// <param name="course">The course.</param>
-        /// <returns></returns>
-        CourseDTO UpdateCourse(CourseDTO course);
-
-        /// <summary>
-        /// Deletes the course.
-        /// </summary>
-        /// <param name="courseID">The course identifier.</param>
-        /// <returns></returns>
-        int DeleteCourse(int courseID);
-
-        #endregion
-
-        #region Office Assignments
-
-        /// <summary>
-        /// Gets the office assignment.
-        /// </summary>
-        /// <param name="instructorID">The person identifier.</param>
-        /// <returns></returns>
-        OfficeAssignmentDTO GetOfficeAssignment(int instructorID);
-
-        /// <summary>
-        /// Gets all office assignments.
-        /// </summary>
-        /// <returns></returns>
-        IEnumerable<OfficeAssignmentDTO> GetAllOfficeAssignments();
-
-        /// <summary>
-        /// Creates the office assignment.
-        /// If the InstructorID is already assigned to another office, this method
-        /// will delete the instructor's prior assignment, then assign the new location.
-        /// </summary>
-        /// <param name="assignment">The assignment.</param>
-        /// <returns></returns>
-        OfficeAssignmentDTO CreateOfficeAssignment(OfficeAssignmentDTO assignment);
-
-        /// <summary>
-        /// Updates the office assignment.
-        /// </summary>
-        /// <param name="assignment">The assignment.</param>
-        /// <returns></returns>
-        OfficeAssignmentDTO UpdateOfficeAssignment(OfficeAssignmentDTO assignment);
-
-        /// <summary>
-        /// Deletes the office assignment.
-        /// </summary>
-        /// <param name="personID">The person identifier.</param>
-        /// <returns></returns>
-        int DeleteOfficeAssignment(int personID);
-
-        #endregion
-
-        #region Student Grades
+        #region Student Grade Methods
 
         /// <summary>
         /// Gets the student grade.

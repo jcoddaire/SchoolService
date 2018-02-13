@@ -714,5 +714,63 @@ namespace StudentService.Data
         }
 
         #endregion
+
+        #region Online Courses
+
+        public IEnumerable<OnlineCourseDTO> GetAllOnlineCourses()
+        {
+            throw new NotImplementedException();
+        }
+
+        public OnlineCourseDTO GetOnlineCourse(int courseID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public OnlineCourseDTO AddOnlineCourse(OnlineCourseDTO course)
+        {
+            throw new NotImplementedException();
+        }
+
+        public OnlineCourseDTO UpdateOnlineCourse(OnlineCourseDTO course)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int DeleteOnlineCourse(int courseID)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region Onsite Courses
+
+        public IEnumerable<OnsiteCourseDTO> GetAllOnsiteCourses()
+        {
+            throw new NotImplementedException();
+        }
+
+        public OnsiteCourseDTO GetOnsiteCourse(int courseID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public OnsiteCourseDTO AddOnsiteCourse(OnsiteCourseDTO course)
+        {
+            throw new NotImplementedException();
+        }
+
+        public OnsiteCourseDTO UpdateOnsiteCourse(OnsiteCourseDTO course)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int DeleteOnsiteCourse(int courseID)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

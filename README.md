@@ -9,13 +9,13 @@ This is a simple demo project. It includes things I'm learning, practicing, or i
 - Unit Tests
 - Integration Tests
 - Microsoft SQL Server 2016
+- .NET Framework 4.7.2
 
 ## To Add:
 
 - Front end client / web app. Probably going to be using Angular or React, haven't decided which yet.
-- Examples for newer tech - .NET Core is interesting.
+- .NET Core example.
 - Examples for older tech - DataTables, ASMX services, etc.
-- The auto-build thing I see on OSS projects.
 
 ## To Iterate:
 

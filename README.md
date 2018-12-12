@@ -4,11 +4,11 @@ This is a simple demo project. It includes things I'm learning, practicing, or i
 
 ## Current Technologies:
 
-- WebAPI
+- WebAPI with Swagger UI
 - Entity Framework
 - Unit Tests
 - Integration Tests
-- Microsoft SQL Server 2014
+- Microsoft SQL Server 2016
 
 ## To Add:
 
@@ -24,7 +24,6 @@ This is a simple demo project. It includes things I'm learning, practicing, or i
 - Add authorization.
 - Add global error handling.
 - Add logging.
-- Add Swagger, apparently it's the new black.
 
 ### Entity Framework
 

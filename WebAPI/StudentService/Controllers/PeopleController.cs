@@ -20,23 +20,30 @@ namespace StudentService.WebAPI.Controllers
         {
             Repository = repository;
         }
-
-        // GET api/People
+                
+        /// <summary>
+        /// Gets all people in the system.
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<PersonDTO> Get()
         {
             return Repository.GetAllPersons();            
         }
 
-        // GET api/People/5
+        /// <summary>
+        /// Gets a given person.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
         public PersonDTO Get(int id)
         {
-            if(id <= 0)
+            if (id <= 0)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
 
             var target = Repository.GetPerson(id);
-            if(target != null && target.PersonID > 0)
+            if (target != null && target.PersonID > 0)
             {
                 return target;
             }
@@ -44,8 +51,13 @@ namespace StudentService.WebAPI.Controllers
             //cannot find it, throw a 404.
             throw new HttpResponseException(HttpStatusCode.NotFound);
         }
-
-        // POST api/values
+                
+        /// <summary>
+        /// Creates a new person.
+        /// </summary>
+        /// <param name="person">The person.</param>
+        /// <returns></returns>
+        /// <exception cref="HttpResponseException"></exception>
         [HttpPost]
         public PersonDTO Post(PersonDTO person)
         {
@@ -64,7 +76,13 @@ namespace StudentService.WebAPI.Controllers
             return person;
         }
 
-        // PUT api/values/5
+        /// <summary>
+        /// Updates the specified person.
+        /// </summary>
+        /// <param name="person">The person.</param>
+        /// <returns></returns>
+        /// <exception cref="HttpResponseException">
+        /// </exception>
         [HttpPut]
         public PersonDTO Put(PersonDTO person)
         {
@@ -101,8 +119,14 @@ namespace StudentService.WebAPI.Controllers
 
             return person;
         }
-
-        // DELETE api/values/5
+                
+        /// <summary>
+        /// Deletes the specified person.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        /// <exception cref="HttpResponseException">
+        /// </exception>
         public HttpResponseMessage Delete(int id)
         {
             if (id <= 0)

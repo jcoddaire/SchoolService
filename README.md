@@ -28,7 +28,7 @@ This is a simple demo project. It includes things I'm learning, practicing, or i
 ### Entity Framework
 
 - Add environments - Dev, Cert, Prod.
-- Add logging. I'll have to investigate what free options exist.
+- Add logging.
 
 ### Tests (Unit, Integration)
 
